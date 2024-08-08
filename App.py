@@ -1,3 +1,4 @@
+from operator import index
 import requests
 from Pelicula import Pelicula
 from Especie import Especie
@@ -11,6 +12,33 @@ class APP:
     planeta_lista = []
     
     def start(self):
+        print(self.pelicula_lista())
+        while True:
+            menu= input("""Bienvenido viajero, indiqueme que decea saber del universo de star wars
+    1. lista de peliculas
+    2. lista de especies
+    3. lista de planetas
+    4. buscar personaje
+    5. mision
+    6. graficos
+    7.Estadistica de las naves
+    8. mision                   
+    9. Terminar el programa
+    ---> """).strip()
+            if menu =="1":
+                index=1
+                for Peli in self.pelicula_lista:
+                    Peli:Pelicula
+                    print(f"""{index}-Título: {Peli.title}
+Episodio: {Peli.episode_id}
+Fecha de fecha de lanzamiento: {Peli.release_date}
+opening de apertura: {Peli.opening_crawl}
+Nombre del director {Peli.director}""")
+                    index+=1
+                break    
+                    
+
+
         '''self.crear_pelicula()
         for pelicula in self.pelicula_lista:
             pelicula.showPelicula()
@@ -87,8 +115,8 @@ class APP:
                 release_date = pelicula["release_date"]
                 opening_crawl = pelicula["opening_crawl"]
                 nueva_pelicula = Pelicula(title, episode, release_date, opening_crawl, director)
-                self.pelicula_lista.append(nueva_pelicula)
-                '''print("Pelicula: " + title + " creada")'''
+                self.pelicula_lista.append(nueva_pelicula)  
+            '''print("Pelicula: " + title + " creada")'''
 
     def obtener_especies_de_personajes(self):
         especies_por_personaje = {}
