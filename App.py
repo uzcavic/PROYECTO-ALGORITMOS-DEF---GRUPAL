@@ -20,6 +20,7 @@ class APP:
         self.crear_planeta()
         for  planeta in self.planeta_lista:
             planeta.showPlaneta()
+        '''self.obtener_especies_de_personajes()''' #para personajes
 
         #self.crear_personajes()
         
@@ -54,12 +55,12 @@ class APP:
                         if response_personaje.status_code == 200:
                             datos_personaje = response_personaje.json()['result']['properties']
                             people = datos_personaje['name']
-                            lista_personajes.append(people)
+                            lista_personajes.append(people) #personajes que pertenecen a la especie
                      
                 
                 lista_episodios = [] #eps en los que aparece la especie
                 for id_episodio in range (1,7):
-                    print("Viendo especie: " + str(id_episodio))
+                    '''print("Viendo especie: " + str(id_episodio))'''
                     id_episodio = str(id_episodio)
                     url_episodio = f"https://www.swapi.tech/api/films/{id_episodio}/"
                     response_episodio = requests.get(url_episodio)
@@ -75,21 +76,45 @@ class APP:
                 self.especie_lista.append(nueva_especie)
                                
     def crear_pelicula(self): 
-        url = "https://www.swapi.tech/api/films/"
+        url = "https://swapi.dev/api/films/"
         response = requests.get(url)
         if response.status_code == 200:
-            datos = response.json()["result"]
+            datos = response.json()["results"]
             for pelicula in datos:
-                title = pelicula["properties"]["title"]
-                episode = pelicula["properties"]["episode_id"]
-                director = pelicula["properties"]["director"]
-                release_date = pelicula["properties"]["release_date"]
-                opening_crawl = pelicula["properties"]["opening_crawl"]
+                title = pelicula["title"]
+                episode = pelicula["episode_id"]
+                director = pelicula["director"]
+                release_date = pelicula["release_date"]
+                opening_crawl = pelicula["opening_crawl"]
                 nueva_pelicula = Pelicula(title, episode, release_date, opening_crawl, director)
                 self.pelicula_lista.append(nueva_pelicula)
-                print("Pelicula: " + title + " creada")
+                '''print("Pelicula: " + title + " creada")'''
 
-    """def crear_personaje(self):"""
+    def obtener_especies_de_personajes(self):
+        especies_por_personaje = {}
+        for especie in self.especie_lista:
+            for personaje in especie.lista_personajes:
+                especies_por_personaje[personaje] = especie.name
+                print(especies_por_personaje)       
+        return especies_por_personaje
+
+    def crear_personaje(self):
+        for id_personaje in range(1, 83):
+            id_personaje = str(id_personaje)
+            url = f"https://www.swapi.tech/api/people/{id_personaje}"
+            response_personaje = requests.get(url)
+            if response_personaje.status_code == 200:
+                datos_personaje = response_personaje.json()['result']['properties']
+                nombre = datos_personaje['name']
+                planeta_origen = datos_personaje['homeworld']
+                genero=datos_personaje['gender']
+            
+                especie = self.obtener_especies_de_personajes()[nombre] 
+
+            nuevo_personaje = Personaje(nombre, planeta_origen, 0, genero, especie, 0, 0) 
+            self.personaje_lista.append(nuevo_personaje)   
+            
+
 
 
 
@@ -111,25 +136,28 @@ class APP:
                     #falta Nombre de los personajes que pertenecen a la especie y Nombre de los episodios en los que aparecen.
 
                     lista_planeta_en_episodio=[] #episodios en los que aparece el planeta
-                    for id_episodio in range(1,7):
-                        id_episodio = str(id_episodio)
-                        url_episodio = f"https://www.swapi.tech/api/films/{id_episodio}"
-                        response_episodio = requests.get(url_episodio)
-                        if response_episodio.status_code == 200:
-                            datos_episodio = response_episodio.json()['result']['properties']
-                            url = f"https://www.swapi.tech/api/planets/{id_planeta}"
-                            if url in datos_episodio['planets']:
-                                lista_planeta_en_episodio.append(datos_episodio['title'])
-                    lista_personajes_en_planeta = []
-                    for id_personaje in range(1, 83):
-                        id_personaje = str(id_personaje)
-                        url_personaje = f"https://www.swapi.tech/api/people/{id_personaje}"
-                        response_personaje = requests.get(url_personaje)
-                        if response_personaje.status_code == 200:
-                            datos_personaje = response_personaje.json()['result']['properties']
-                            url = f"https://www.swapi.tech/api/planets/{id_planeta}"
-                            if url in datos_personaje['homeworld']:
-                                lista_personajes_en_planeta.append(datos_personaje['name'])
+                for id_episodio in range(1, 7):
+                    id_episodio = str(id_episodio)
+                    url_episodio = f"https://www.swapi.tech/api/films/{id_episodio}"
+                    response_episodio = requests.get(url_episodio)
+                    if response_episodio.status_code == 200:
+                        datos_episodio = response_episodio.json()['result']['properties']
+                        if url in datos_episodio['planets']:
+                            lista_planeta_en_episodio.append(datos_episodio['title'])
+
+                lista_personajes_en_planeta = []
+                url_personajes = "https://swapi.dev/api/people/"
+                
+                while url_personajes:
+                    response_personajes = requests.get(url_personajes)
+                    data_personajes = response_personajes.json()
+
+                    for personaje in data_personajes['results']:
+                        homeworld_url = personaje['homeworld']
+                        if homeworld_url == url:
+                            lista_personajes_en_planeta.append(personaje['name'])
+
+                    url_personajes = data_personajes['next']
 
                 nuevo_planeta = Planeta(uid, name, periodo_orbita, periodo_rotacion, habitantes, clima, lista_planeta_en_episodio, lista_personajes_en_planeta)
                 self.planeta_lista.append(nuevo_planeta)
