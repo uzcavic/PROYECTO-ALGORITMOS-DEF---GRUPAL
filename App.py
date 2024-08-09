@@ -12,7 +12,7 @@ class APP:
     planeta_lista = []
     nave_lista = []
     personaje_especie = {}
-    personaje_naves = {}    
+    personaje_nave = {}    
     
     def start(self):
          #ESTO ES PARA MOSTRAR LAS FUNCIONES cuando se ejecute el codigo, tal cual así con el for   
@@ -20,10 +20,10 @@ class APP:
         for pelicula in self.pelicula_lista:
             self.crear_pelicula()
         for pelicula in self.pelicula_lista:
-            pelicula.showPelicula()
+            pelicula.showPelicula()'''
         self.crear_especies() #completada
         for especie in self.especie_lista:
-            especie.showEspecie()'''
+            especie.showEspecie()
         self.crear_planeta() #en curso
         for  planeta in self.planeta_lista:
             planeta.showPlaneta()
@@ -69,6 +69,7 @@ class APP:
                         if personaje_response.status_code == 200:
                             personaje_id = personaje_url.split("/")[-1] #esto es para obtener el id del personaje
                             self.personaje_especie[personaje_id] = name #esto es para relacionar el id del personaje con la especie
+
 
                     response_homeworld = requests.get(homeworld)
                     if response_homeworld.status_code == 200:
@@ -133,7 +134,7 @@ class APP:
 
                 especie = self.personaje_especie.get(id_personaje)
 
-                nave = self.personaje_naves.get(id_personaje)
+                nave = self.personaje_nave.get(id_personaje)
 
                 response_planeta = requests.get(planeta_origen)
                 if response_planeta.status_code == 200:
@@ -171,7 +172,7 @@ class APP:
                         personaje_response = requests.get(nave_id)
                         if personaje_response.status_code == 200:
                             personaje_id = nave_id.split("/")[-1] #esto es para obtener el id del personaje
-                            self.personaje_especie[personaje_id] = nombre #esto es para relacionar el id del personaje con la especie
+                            self.personaje_nave[personaje_id] = nombre #esto es para relacionar el id del personaje con la especie
 
 
                 nueva_nave = Nave(nombre, longitud, capacidad_carga, clasificacion_hiperimpulsor, mgl)

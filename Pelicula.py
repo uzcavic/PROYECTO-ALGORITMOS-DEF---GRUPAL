@@ -10,7 +10,7 @@ class Pelicula:
         print(f"Título: {self.title}\nEpisodio: {self.episode_id}\n"
             f"Fecha de Lanzamiento: {self.release_date}\n"
             f"Director: {self.director}\n"
-            f"Opening Crawl:\n{self.opening_crawl}\n")
+            f"Opening Crawl: {self.opening_crawl}\n")
         
 
 

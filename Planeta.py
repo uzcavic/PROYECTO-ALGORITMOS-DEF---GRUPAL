@@ -1,4 +1,4 @@
-from matplotlib.pylab import f
+#from matplotlib.pylab import f
 
 
 class Planeta:
