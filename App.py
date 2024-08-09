@@ -12,6 +12,22 @@ class APP:
     planeta_lista = []
     
     def start(self):
+         #ESTO ES PARA MOSTRAR LAS FUNCIONES cuando se ejecute el codigo, tal cual así con el for   
+        '''self.crear_pelicula() #completada
+        for pelicula in self.pelicula_lista:
+            self.crear_pelicula()
+        for pelicula in self.pelicula_lista:
+            pelicula.showPelicula()
+        self.crear_especies() #completada
+        for especie in self.especie_lista:
+            especie.showEspecie()
+        self.crear_planeta() #en curso
+        for  planeta in self.planeta_lista:
+            planeta.showPlaneta()
+        self.crear_personaje() #en curso
+        for personaje in self.personaje_lista:
+            personaje.showPersonaje()'''
+
 <<<<<<< HEAD
         print(self.pelicula_lista())
         while True:
@@ -40,22 +56,7 @@ Nombre del director {Peli.director}""")
                     
 
 
-        '''self.crear_pelicula()
-        for pelicula in self.pelicula_lista:
-=======
-        self.crear_pelicula()
-        '''for pelicula in self.pelicula_lista:
->>>>>>> 40bf8c83baf8f2db746439c366fb6703954f8072
-            pelicula.showPelicula()
-        self.crear_especies()
-        for especie in self.especie_lista:
-            especie.showEspecie()'''
-        self.crear_planeta()
-        for  planeta in self.planeta_lista:
-            planeta.showPlaneta()
-        '''self.crear_personaje()
-        for personaje in self.personaje_lista:
-            personaje.showPersonaje()'''
+
   
          #para personajes
 
