@@ -6,3 +6,5 @@ class Nave:
         self.clasificacion_hiperimpulsor = clasificacion_hiperimpulsor
         self.mgl = mgl
         
+    def showNave(self):
+        print(f"Nombre: {self.nombre}\nLongitud: {self.longitud}\nCapacidad de carga: {self.capacidad_carga}\nClasificación de hiperimpulsor: {self.clasificacion_hiperimpulsor}\n'MGLT: {self.mgl}\n")    

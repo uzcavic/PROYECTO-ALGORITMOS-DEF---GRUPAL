@@ -3,13 +3,16 @@ from Pelicula import Pelicula
 from Especie import Especie
 from Personaje import Personaje
 from Planeta import Planeta
+from Nave import Nave
 
 class APP:
     especie_lista = []
     pelicula_lista = []
     personaje_lista = []
     planeta_lista = []
+    nave_lista = []
     personaje_especie = {}
+    personaje_naves = {}    
     
     def start(self):
          #ESTO ES PARA MOSTRAR LAS FUNCIONES cuando se ejecute el codigo, tal cual así con el for   
@@ -17,16 +20,19 @@ class APP:
         for pelicula in self.pelicula_lista:
             self.crear_pelicula()
         for pelicula in self.pelicula_lista:
-            pelicula.showPelicula()'''
+            pelicula.showPelicula()
         self.crear_especies() #completada
         for especie in self.especie_lista:
-            especie.showEspecie()
-        '''self.crear_planeta() #en curso
+            especie.showEspecie()'''
+        self.crear_planeta() #en curso
         for  planeta in self.planeta_lista:
-            planeta.showPlaneta()'''
+            planeta.showPlaneta()
         self.crear_personaje() #en curso
         for personaje in self.personaje_lista:
             personaje.showPersonaje()
+        self.crear_nave() #en curso
+        for nave in self.nave_lista:
+            nave.showNave()
 
 
   
@@ -58,7 +64,7 @@ class APP:
                     language =especie_info['properties']['language']
                     people=especie_info['properties']['people'] #esto es una lista de urls de los personajes que pertenecen a esa especie
                     
-                    for personaje_url in people:
+                    for personaje_url in people: #SUJETO A CAMBIOSSSSSSS
                         personaje_response = requests.get(personaje_url)
                         if personaje_response.status_code == 200:
                             personaje_id = personaje_url.split("/")[-1] #esto es para obtener el id del personaje
@@ -114,6 +120,7 @@ class APP:
 
 
     def crear_personaje(self):
+
         for id_personaje in range(1, 83):
             id_personaje = str(id_personaje)
             url = f"https://www.swapi.tech/api/people/{id_personaje}"
@@ -126,6 +133,8 @@ class APP:
 
                 especie = self.personaje_especie.get(id_personaje)
 
+                nave = self.personaje_naves.get(id_personaje)
+
                 response_planeta = requests.get(planeta_origen)
                 if response_planeta.status_code == 200:
                     datos_planeta = response_planeta.json()['result']['properties']
@@ -134,20 +143,47 @@ class APP:
                     nombre_planeta = "Desconocido"
 
                 lista_episodios = self.obtener_episodios_de_personaje(id_personaje)
-                nuevo_personaje = Personaje(nombre, nombre_planeta, lista_episodios, genero, especie, 0, 0)
+                nuevo_personaje = Personaje(nombre, nombre_planeta, lista_episodios, genero, especie, nave, 0)
                 self.personaje_lista.append(nuevo_personaje)
+
                 
 
             else:  #personaje que no existe
                 '''print(f"Error {response_personaje.status_code} al obtener la información del personaje con ID {id_personaje}")'''
                 continue  # Salta al siguiente personaje
 
-            
+           
+    def crear_nave(self):
+        for nave_id in range(1, 38):
+            nave_id = str(nave_id)
+            url = f"https://www.swapi.tech/api/starships/{nave_id}"
+            response_nave = requests.get(url)
+            if response_nave.status_code == 200:
+                datos_nave = response_nave.json()['result']['properties']
+                nombre = datos_nave['name']
+                longitud = datos_nave['length']
+                capacidad_carga = datos_nave['cargo_capacity']
+                clasificacion_hiperimpulsor = datos_nave['hyperdrive_rating']
+                mgl = datos_nave['MGLT']
+                pilotos = datos_nave['pilots'] #esto es una lista de urls de los personajes que pilotan la nave
+
+                for nave_id in pilotos:
+                        personaje_response = requests.get(nave_id)
+                        if personaje_response.status_code == 200:
+                            personaje_id = nave_id.split("/")[-1] #esto es para obtener el id del personaje
+                            self.personaje_especie[personaje_id] = nombre #esto es para relacionar el id del personaje con la especie
+
+
+                nueva_nave = Nave(nombre, longitud, capacidad_carga, clasificacion_hiperimpulsor, mgl)
+                self.nave_lista.append(nueva_nave)
+            else:
+                continue
+
     def obtener_episodios_de_personaje(self, id_personaje):
             episodios = []
             response_peliculas = requests.get("https://www.swapi.tech/api/films")
             if response_peliculas.status_code == 200:
-                peliculas = response_peliculas.json().get('result')
+                peliculas = response_peliculas.json()['result']
                 for pelicula in peliculas:
                     personajes_en_pelicula = pelicula['properties']['characters']
                     if f"https://www.swapi.tech/api/people/{id_personaje}" in personajes_en_pelicula:
@@ -186,10 +222,13 @@ class APP:
                             lista_planeta_en_episodio.append(datos_episodio['title'])
 
                 lista_personajes_en_planeta = []
-                url_personajes = "https://www.swapi.tech/api/films/"
+                url_personajes = "https://www.swapi.tech/api/films/" #por completar
                 
                 
 
                 nuevo_planeta = Planeta(uid, name, periodo_orbita, periodo_rotacion, habitantes, clima, lista_planeta_en_episodio, lista_personajes_en_planeta)
                 self.planeta_lista.append(nuevo_planeta)
                         
+
+
+
