@@ -18,10 +18,10 @@ class APP:
     
     
     def start(self):
-        
+
         self.crear_pelicula() #completada
         for pelicula in self.pelicula_lista:
-            self.crear_pelicula()
+            pelicula.showPelicula()
         
         self.crear_especies() #completada
         for especie in self.especie_lista:
