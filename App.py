@@ -18,7 +18,7 @@ class APP:
     
     
     def start(self):
-         #ESTO ES PARA MOSTRAR LAS FUNCIONES cuando se ejecute el codigo, tal cual así con el for   
+        
         self.crear_pelicula() #completada
         for pelicula in self.pelicula_lista:
             self.crear_pelicula()
