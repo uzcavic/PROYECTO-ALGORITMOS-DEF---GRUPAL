@@ -4,7 +4,7 @@ from Especie import Especie
 from Personaje import Personaje
 from Planeta import Planeta
 from Nave import Nave, Vehiculo
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt #para instalar esta libreria se habre una nueva terminal, aparece en los tres puntos de arriba, ya abierto colocar "pip install matplotlib y listo" 
 import statistics
 from statistics import mean, multimode
 
