@@ -567,7 +567,7 @@ En este apartado estará el menú para crear misiones
 - Guardando todo en una mega lista de misiones la cual luego podra servir para mostrarse
 """
 #importamos las utilidades anteriormente creadas y además importamos os para poder limpiar la terminal utilizando os.system("clear")
-import clases as cl, os, utilities as ut
+"""import clases as cl, os, utilities as ut
 
 
 #Creamos la clase para crear misiones
@@ -625,3 +625,4 @@ missions = []
 menu(c_arr, g_arr, pl_arr, stsh_arr, missions)
 
 
+"""
