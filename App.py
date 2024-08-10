@@ -111,12 +111,12 @@ class APP:
                 mglt.append(float(nave.MGLT))
                 datos.append(float(nave.MGLT))  
         while True: 
-             Estadi_menu=input(f"""Indiqueme que graficas decea ver
+             Estadi_menu=input(f"""Indiqueme que graficas desea ver
 {20*'-'}
-    1. Graficos de longitud
-    2. Graficos de capacidad de carga
-    3. Graficos de hiperpropulsor
-    4. Graficos de MGLT
+    1. Gráficos de longitud
+    2. Gráficos de capacidad de carga
+    3. Gráficos de hiperpropulsor
+    4. Gráficos de MGLT
     5. Volver
     ---> """)     
              if Estadi_menu=="1":          
@@ -225,39 +225,39 @@ class APP:
         while True: 
             Estadi_menu=input(f"""Indiqueme que estadistica quiere ver de las naves
 {60*'-'}
-    1. Estadistica sobre los Hiperimpulsore
-    2. Estadistica sobre los MGLT
-    3. Estadistica sobre la velocidad maxima en atmosfera
-    4. Estadistica sobre el costo de las naves
+    1. Estadística sobre los Hiperimpulsores
+    2. Estadística sobre los MGLT
+    3. Estadística sobre la velocidad máxima en atmósfera
+    4. Estadística sobre el costo de las naves
     5. Volver
     ---> """)
             if Estadi_menu =="1":
                 print(f"""
     hiperimpulsor promedio: {pro_hipe}
     moda de hiperimpulsores: {moda_hipe}
-    maximo hiperimpulsor registrado: {max_hipe}
-    minimo hiperimpulsor registrado: {min_hipe}""")
+    máximo hiperimpulsor registrado: {max_hipe}
+    mínimo hiperimpulsor registrado: {min_hipe}""")
                 continue
             elif Estadi_menu =="2":
                 print(f"""
     MGLT promedio: {pro_mglt}
     moda de MGLT: {moda_mglt}
-    maximo MGLT registrado: {max_mglt}
-    minimo MGLT registrado: {min_mglt}""")
+    máximo MGLT registrado: {max_mglt}
+    mínimo MGLT registrado: {min_mglt}""")
                 continue
             elif Estadi_menu =="3":
                 print(f"""
-    Promedio de la velocidad maxima en atmosfera: {pro_vel}
+    Promedio de la velocidad máxima en atmósfera: {pro_vel}
     moda de la velocidad maxima en atmosfera: {moda_vlmx}
-    maxima velocidad en atmosfera registrado: {max_vlmx}
-    minimo velocidad en attmosfera registrado: {min_vlmx}""")
+    máxima velocidad en atmosfera registrado: {max_vlmx}
+    mínima velocidad en attmosfera registrado: {min_vlmx}""")
                 continue
             elif Estadi_menu =="4":
                 print(f"""
     Promedio de costo en credito de una nave: {pro_costo}
     moda de costo de nave: {moda_costo}
-    maxima costo de una nave: {max_costo}
-    minimo costo de una nave: {min_costo}""")
+    máximo costo de una nave: {max_costo}
+    mínimo costo de una nave: {min_costo}""")
                 continue
                 
             elif Estadi_menu=="5":
@@ -500,6 +500,69 @@ class APP:
             if not persona.naves:
                 persona.naves.append("Este personaje no maneja ninguna nave")
                         
+"""
+En este apartado estará el menú para crear misiones
 
+- Usando los objetos anteriormente creados
+- Usando a cada misión como un objeto
+- Guardando todo en una mega lista de misiones la cual luego podra servir para mostrarse
+"""
+#importamos las utilidades anteriormente creadas y además importamos os para poder limpiar la terminal utilizando os.system("clear")
+import clases as cl, os, utilities as ut
+
+
+#Creamos la clase para crear misiones
+class Mission:
+    def __init__(self, name, destiny, star_ship) -> None:
+        self.name = name
+        self.destiny = destiny
+        self.star_ship = star_ship
+        self.guns = []
+        self.characters = []
+    def show_mission(self):
+        return ""
+
+
+#Creamos instancias de prueba para probar al menú
+obj_prueba_1 = cl.Planet("Earth", 90, 80, 1000000, "Mixto")
+obj_prueba_2 = cl.Character("Chayanne", obj_prueba_1, "Male", "Homosapiens") 
+obj_prueba_3 = cl.Gun("Rifle .177", 90)
+obj_prueba_4 = cl.StarShip("Estrella de la muertr", 40000, "T-908", "idk")
+
+
+#MENÚ
+def menu(c_arr, g_arr, pl_arr, stsh_arr, missions):
+    #Inicio del menú
+    while True:
+        
+        #ELección inicial junto a sus respectivas validaciones.
+        while True:
+            try:
+                elec = ut.validation(int(input("Bienvenido a la creación de missiones! Elija qué desea hacer\n>1. Crear una misión\n>2. Modificar misiones\n>3. Ver misiones\n>4. Salir\n\n>>>")), 1, 4)
+                break
+            except ValueError:
+                os.system("clear")
+                print("ERROR!, solo se admiten números como respuesta")
+        os.system("clear")
+        
+        if elec == 1: #Creación de misión
+            mission_name = input("Bienvenido a la creación de misiones, Para crear su misión dele nombre: ")
+            print("Perfecto, elija el número del planeta donde se va a desarrollar su misión.")
+        elif elec == 2: #Edición de misión
+            pass
+        elif elec ==3: #Ver misiones
+            pass
+        else: #Salir del menú
+            break
+        
+    return missions
+
+c_arr = [obj_prueba_2]
+g_arr = [obj_prueba_3]
+pl_arr = [obj_prueba_1]
+stsh_arr = [obj_prueba_4]
+missions = []
+
+menu(c_arr, g_arr, pl_arr, stsh_arr, missions)
 
 
