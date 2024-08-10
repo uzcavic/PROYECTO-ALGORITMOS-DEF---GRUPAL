@@ -7,7 +7,6 @@ from Nave import Nave, Vehiculo
 import matplotlib.pyplot as plt
 import statistics
 from statistics import mean, multimode
-from statistics import mode, multimod
 
 class APP:
     especie_lista = []
