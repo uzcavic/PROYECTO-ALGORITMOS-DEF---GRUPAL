@@ -60,7 +60,7 @@ class APP:
                 index=1
                 for especie in self.especie_lista:
                     especie:Especie
-                    print(f"Pelicula N°{index}\n")
+                    print(f"Especie N°{index}\n")
                     especie.showEspecie()
                     index+=1
             elif menu =="1":
@@ -74,9 +74,13 @@ class APP:
                 index=1
                 for planeta in self.planeta_lista:
                     planeta:Planeta
-                    print(f"Pelicula N°{index}\n")
+                    print(f"Planeta N°{index}\n")
                     planeta.showPlaneta()
-                    index+=1                 
+                    index+=1 
+            elif menu =="4":
+                for personaje in self.personaje_lista:
+                    personaje:Personaje
+                    personaje.showPersonaje()                         
             elif menu =="5":
                 self.grafica_planetas()
             elif menu =="6":
