@@ -1,4 +1,4 @@
-from App import APP
+from viejoapp import APP
 
 def main():
 

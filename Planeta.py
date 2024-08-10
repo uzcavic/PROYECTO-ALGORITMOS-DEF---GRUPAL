@@ -2,15 +2,15 @@
 
 
 class Planeta:
-    def __init__(self, uid, nombre, periodo_orbita, periodo_rotacion, habitantes, clima, episodios, personajes):
+    def __init__(self, uid, nombre, periodo_orbita, periodo_rotacion, habitantes, clima, lista_episodios, lista_personajes):
         self.uid = uid
         self.nombre = nombre
         self.periodo_orbita = periodo_orbita
         self.periodo_rotacion = periodo_rotacion
         self.habitantes = habitantes
         self.clima = clima
-        self.episodios = episodios
-        self.personajes = personajes
+        self.episodios = lista_episodios
+        self.personajes = lista_personajes
 
     def showPlaneta(self):
         print(f"ID: {self.uid}\n"

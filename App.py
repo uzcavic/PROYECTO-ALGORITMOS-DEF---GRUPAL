@@ -3,7 +3,7 @@ from Pelicula import Pelicula
 from Especie import Especie
 from Personaje import Personaje
 from Planeta import Planeta
-from Nave import Nave
+from Nave import Nave, Vehiculo
 
 class APP:
     especie_lista = []
@@ -11,28 +11,41 @@ class APP:
     personaje_lista = []
     planeta_lista = []
     nave_lista = []
+    vehiculos_lista = []
     personaje_especie = {}
-    personaje_nave = {}    
+    personaje_nave = {} 
+    personaje_planeta = {}    
+    
     
     def start(self):
          #ESTO ES PARA MOSTRAR LAS FUNCIONES cuando se ejecute el codigo, tal cual así con el for   
-        '''self.crear_pelicula() #completada
+        self.crear_pelicula() #completada
         for pelicula in self.pelicula_lista:
             self.crear_pelicula()
-        for pelicula in self.pelicula_lista:
-            pelicula.showPelicula()'''
+        
         self.crear_especies() #completada
         for especie in self.especie_lista:
             especie.showEspecie()
+
         self.crear_planeta() #en curso
+
+        self.crear_personaje() #en curso
+        self.relacionar_personajes_con_planetas()
         for  planeta in self.planeta_lista:
             planeta.showPlaneta()
-        self.crear_personaje() #en curso
-        for personaje in self.personaje_lista:
-            personaje.showPersonaje()
+
         self.crear_nave() #en curso
+        print("NAVES")
         for nave in self.nave_lista:
             nave.showNave()
+
+        print("Vehiculos")
+        self.crear_vehiculos() #en curso
+        for vehiculo in self.vehiculos_lista:
+            vehiculo.showVehiculo()
+        self.relacionar_vehiculos_y_naves_con_personajes()
+        for personaje in self.personaje_lista:
+            personaje.showPersonaje()
 
 
   
@@ -121,9 +134,10 @@ class APP:
 
 
     def crear_personaje(self):
-
+        personaje_planeta = {} 
         for id_personaje in range(1, 83):
             id_personaje = str(id_personaje)
+            print("Viendo personaje: " + str(id_personaje))
             url = f"https://www.swapi.tech/api/people/{id_personaje}"
             response_personaje = requests.get(url)
             if response_personaje.status_code == 200:
@@ -134,49 +148,75 @@ class APP:
 
                 especie = self.personaje_especie.get(id_personaje)
 
-                nave = self.personaje_nave.get(id_personaje)
+                if planeta_origen:  
+                    response_planeta = requests.get(planeta_origen)
+                    if response_planeta.status_code == 200:
+                        datos_planeta = response_planeta.json()['result']['properties']
+                        nombre_planeta = datos_planeta['name']
 
-                response_planeta = requests.get(planeta_origen)
-                if response_planeta.status_code == 200:
-                    datos_planeta = response_planeta.json()['result']['properties']
-                    nombre_planeta = datos_planeta['name']
+                        # Añade el personaje a la lista de personajes del planeta
+                        if nombre_planeta in self.personaje_planeta:
+                            self.personaje_planeta[nombre_planeta].append(nombre)
+                        else:
+                            self.personaje_planeta[nombre_planeta] = [nombre]
+                    else:
+                        nombre_planeta = "Desconocido"
                 else:
                     nombre_planeta = "Desconocido"
 
                 lista_episodios = self.obtener_episodios_de_personaje(id_personaje)
-                nuevo_personaje = Personaje(nombre, nombre_planeta, lista_episodios, genero, especie, nave, 0)
+                nuevo_personaje = Personaje(nombre, nombre_planeta, lista_episodios, genero, especie, [], [])
                 self.personaje_lista.append(nuevo_personaje)
 
-                
+            else:  # Si el personaje no existe o no se puede acceder
+                continue
 
-            else:  #personaje que no existe
-                '''print(f"Error {response_personaje.status_code} al obtener la información del personaje con ID {id_personaje}")'''
-                continue  # Salta al siguiente personaje
-
-           
     def crear_nave(self):
-        for nave_id in range(1, 38):
+        for nave_id in range(1, 37):
             nave_id = str(nave_id)
+            print("Viendo nave: " + str(nave_id))
             url = f"https://www.swapi.tech/api/starships/{nave_id}"
             response_nave = requests.get(url)
             if response_nave.status_code == 200:
                 datos_nave = response_nave.json()['result']['properties']
                 nombre = datos_nave['name']
-                longitud = datos_nave['length']
-                capacidad_carga = datos_nave['cargo_capacity']
-                clasificacion_hiperimpulsor = datos_nave['hyperdrive_rating']
-                mgl = datos_nave['MGLT']
-                pilotos = datos_nave['pilots'] #esto es una lista de urls de los personajes que pilotan la nave
+                longitude = datos_nave['length']
+                carga = datos_nave['cargo_capacity']
+                crew = datos_nave['crew']
+                pasajeros = datos_nave['passengers']
+                hiperdrive = datos_nave['hyperdrive_rating']
+                MGLT = datos_nave['MGLT']
+                pilotos_nave = []
+                for piloto_url in datos_nave['pilots']:
+                    response_piloto = requests.get(piloto_url)
+                    if response_piloto.status_code == 200:
+                        datos_piloto = response_piloto.json()['result']['properties']
+                        pilotos_nave.append(datos_piloto['name'])
+                self.nave_lista.append(Nave(nombre, longitude, carga, crew, pasajeros, pilotos_nave, hiperdrive, MGLT))
+                
+            else:
+                continue
 
-                for nave_id in pilotos:
-                        personaje_response = requests.get(nave_id)
-                        if personaje_response.status_code == 200:
-                            personaje_id = nave_id.split("/")[-1] #esto es para obtener el id del personaje
-                            self.personaje_nave[personaje_id] = nombre #esto es para relacionar el id del personaje con la especie
-
-
-                nueva_nave = Nave(nombre, longitud, capacidad_carga, clasificacion_hiperimpulsor, mgl)
-                self.nave_lista.append(nueva_nave)
+    def crear_vehiculos(self):
+        for vehiculo_id in range(1, 40):
+            vehiculo_id = str(vehiculo_id)
+            print("Viendo vehiculo: " + str(vehiculo_id))
+            url = f"https://www.swapi.tech/api/vehicles/{vehiculo_id}"
+            response_vehiculo = requests.get(url)
+            if response_vehiculo.status_code == 200:
+                datos_vehiculo = response_vehiculo.json()['result']['properties']
+                nombre = datos_vehiculo['name']
+                longitude = datos_vehiculo['length']
+                carga = datos_vehiculo['cargo_capacity']
+                crew = datos_vehiculo['crew']
+                pasajeros = datos_vehiculo['passengers']
+                pilotos_vehiculo = []
+                for piloto_url in datos_vehiculo['pilots']:
+                    response_piloto = requests.get(piloto_url)
+                    if response_piloto.status_code == 200:
+                        datos_piloto = response_piloto.json()['result']['properties']
+                        pilotos_vehiculo.append(datos_piloto['name'])
+                self.vehiculos_lista.append(Vehiculo(nombre, longitude, carga, crew, pasajeros, pilotos_vehiculo))
             else:
                 continue
 
@@ -211,24 +251,42 @@ class APP:
                     #falta Nombre de los personajes que pertenecen a la especie y Nombre de los episodios en los que aparecen.
 
                     lista_planeta_en_episodio=[] #episodios en los que aparece el planeta
-                for id_episodio in range(1, 7):
-                    id_episodio = str(id_episodio)
+                    for id_episodio in range(1, 7):
+                        id_episodio = str(id_episodio)
+                        url_episodio = f"https://www.swapi.tech/api/films/{id_episodio}"
+                        response_episodio = requests.get(url_episodio)
+                        if response_episodio.status_code == 200:
+                            print("Viendo episodio: " + str(id_episodio))
+                            datos_episodio = response_episodio.json()['result']['properties']
+                            if url in datos_episodio['planets']:
+                                lista_planeta_en_episodio.append(datos_episodio['title'])
 
-                    url_episodio = f"https://www.swapi.tech/api/films/{id_episodio}"
-                    response_episodio = requests.get(url_episodio)
-                    if response_episodio.status_code == 200:
-                        print("Viendo episodio: " + str(id_episodio))
-                        datos_episodio = response_episodio.json()['result']['properties']
-                        if url in datos_episodio['planets']:
-                            lista_planeta_en_episodio.append(datos_episodio['title'])
+                    lista_personajes_en_planeta = [] #personajes que pertenecen al planeta
 
-                lista_personajes_en_planeta = []
-                url_personajes = "https://www.swapi.tech/api/films/" #por completar
+
+
+                    nuevo_planeta = Planeta(uid, name, periodo_orbita, periodo_rotacion, habitantes, clima, lista_planeta_en_episodio, lista_personajes_en_planeta)
+                    self.planeta_lista.append(nuevo_planeta)
+
+    def relacionar_personajes_con_planetas(self):
+        for planeta in self.planeta_lista: #recorro la lista de planetas
+            for persona in self.personaje_lista: #y recorro la de personajes
+                if persona.planeta_origen == planeta.nombre: #si el homeplanet del personaje es igual al nombre del planeta
+                    planeta.personajes.append(persona.nombre) #lo agrego >:D
+
+    def relacionar_vehiculos_y_naves_con_personajes(self):
+        for persona in self.personaje_lista:
+            for vehiculo in self.vehiculos_lista:
+                for piloto in vehiculo.pilotos:
+                    if piloto == persona.nombre:
+                        persona.vehiculos.append(vehiculo.nombre)
                 
-                
+        for persona in self.personaje_lista:
+            for nave in self.nave_lista:
+                for piloto in nave.pilotos:
+                    if piloto == persona.nombre:
+                        persona.naves.append(nave.nombre)
 
-                nuevo_planeta = Planeta(uid, name, periodo_orbita, periodo_rotacion, habitantes, clima, lista_planeta_en_episodio, lista_personajes_en_planeta)
-                self.planeta_lista.append(nuevo_planeta)
                         
 
 
