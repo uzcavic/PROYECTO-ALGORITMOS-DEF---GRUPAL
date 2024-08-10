@@ -491,14 +491,17 @@ class APP:
                         persona.vehiculos.append(vehiculo.nombre)
             if not persona.vehiculos:
                 persona.vehiculos.append("Este personaje no maneja ningún vehículo")
-                
+            persona.vehiculos = ", ".join(persona.vehiculos)
+                                          
         for persona in self.personaje_lista:
             for nave in self.nave_lista:
                 for piloto in nave.pilotos:
                     if piloto == persona.nombre:
                         persona.naves.append(nave.nombre)
+                    
             if not persona.naves:
                 persona.naves.append("Este personaje no maneja ninguna nave")
+            persona.naves = ", ".join(persona.naves)    
                         
 """
 En este apartado estará el menú para crear misiones
