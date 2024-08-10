@@ -54,11 +54,6 @@ class APP:
 
 
   
-
-        #self.crear_personajes()
-        
-        #self.menu()...
-
     def crear_especies(self):
 
             for id_specie in range(1, 38): #hay 37 especies en total
@@ -147,6 +142,8 @@ class APP:
                 genero = datos_personaje['gender']
 
                 especie = self.personaje_especie.get(id_personaje)
+                if especie is None:
+                    especie = "Este personaje no pertenece a ninguna especie"
 
                 if planeta_origen:  
                     response_planeta = requests.get(planeta_origen)
@@ -180,7 +177,7 @@ class APP:
             if response_nave.status_code == 200:
                 datos_nave = response_nave.json()['result']['properties']
                 nombre = datos_nave['name']
-                longitude = datos_nave['length']
+                longitud = datos_nave['length']
                 carga = datos_nave['cargo_capacity']
                 crew = datos_nave['crew']
                 pasajeros = datos_nave['passengers']
@@ -192,7 +189,8 @@ class APP:
                     if response_piloto.status_code == 200:
                         datos_piloto = response_piloto.json()['result']['properties']
                         pilotos_nave.append(datos_piloto['name'])
-                self.nave_lista.append(Nave(nombre, longitude, carga, crew, pasajeros, pilotos_nave, hiperdrive, MGLT))
+                     
+                self.nave_lista.append(Nave(nombre, longitud, carga, crew, pasajeros, pilotos_nave, hiperdrive, MGLT))
                 
             else:
                 continue
@@ -280,13 +278,16 @@ class APP:
                 for piloto in vehiculo.pilotos:
                     if piloto == persona.nombre:
                         persona.vehiculos.append(vehiculo.nombre)
+            if not persona.vehiculos:
+                persona.vehiculos.append("Este personaje no maneja ningún vehículo")
                 
         for persona in self.personaje_lista:
             for nave in self.nave_lista:
                 for piloto in nave.pilotos:
                     if piloto == persona.nombre:
                         persona.naves.append(nave.nombre)
-
+            if not persona.naves:
+                persona.naves.append("Este personaje no maneja ninguna nave")
                         
 
 
