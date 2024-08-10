@@ -4,6 +4,10 @@ from Especie import Especie
 from Personaje import Personaje
 from Planeta import Planeta
 from Nave import Nave, Vehiculo
+import matplotlib.pyplot as plt
+import statistics
+from statistics import mean, multimode
+from statistics import mode, multimod
 
 class APP:
     especie_lista = []
@@ -48,12 +52,217 @@ class APP:
             personaje.showPersonaje()
 
 
-  
+    def grafica_planetas(self):            
+            nombre=[]
+            poblacion=[]
+            print(self.planeta_lista)
+            for planeta in self.planeta_lista:
+                planeta:Planeta
+                if planeta.habitantes == "unknown":
+                    nombre.append(planeta.nombre)
+                    poblacion.append(0)
+                else:
+                    nombre.append(planeta.nombre)
+                    poblacion.append(float(planeta.habitantes))
+            print(nombre)
+            print(poblacion)    
+            plt.bar(nombre,poblacion, width=0.6)
+            plt.title('Poblacion de cada planeta')
+            plt.xlabel('Nombre de planetas')
+            plt.ylabel('Poblacion')
+            plt.xticks(rotation=45)
+            plt.show()
                     
+    def Grafica_nave(self):        
+        carga =[]
+        hiperpulsor=[]
+        mglt=[]
+        nombres=[]
+        longtudes=[]
+        for nave in self.nave_lista:
+            datos =[]
+            
+            nave:Nave
+            nombres.append(nave.nombre)
+            if nave.longitud == "unknown":
+                    longtudes.append(0)
+                    datos.append(0)
+            elif nave.longitud =="1,600":
+                 longtudes.append(1600)        
+            else:
+                longtudes.append(float(nave.longitud))
+                datos.append(nave.longitud)
+            if nave.capacidad_carga == "unknown":
+                    carga.append(0)
+                    datos.append(0)
+            else:
+                carga.append(float(nave.capacidad_carga)) 
+                datos.append(float(nave.capacidad_carga))    
+            if nave.hiperdrive == "unknown":
+                    hiperpulsor.append(0)
+                    datos.append(0)
+            else:
+                datos.append(nave.hiperdrive)
+                hiperpulsor.append(float(nave.hiperdrive))
+            if nave.mgl == "unknown":
+                    mglt.append(0)
+                    datos.append(0)
+            else:
+                mglt.append(float(nave.MGLT))
+                datos.append(float(nave.MGLT))  
+        while True: 
+             Estadi_menu=input(f"""Indiqueme que graficas decea ver
+{20*'-'}
+    1. Graficos de longitud
+    2. Graficos de capacidad de carga
+    3. Graficos de hiperpropulsor
+    4. Graficos de MGLT
+    5. Volver
+    ---> """)     
+             if Estadi_menu=="1":          
+                #plt.subplot(221)
+                plt.title("longitudes des naves") 
+                plt.bar(nombres,longtudes,label=("longitud"),color="blue",width=0.6)   
+                plt.xlabel('Nombre de naves')
+                plt.ylabel('magnitud')
+                plt.xticks(rotation=90)         
+                plt.legend()
+                plt.show()
+                continue
+             elif Estadi_menu=="2":
+                #plt.subplot(222)
+                plt.bar(nombres,carga,label=("carga"),color="red",width=0.6)   
+                plt.title("carga de naves")
+                plt.xlabel('Nombre de naves')
+                plt.ylabel('magnitud')    
+                plt.xticks(rotation=90)         
+                plt.legend() 
+                plt.show()
+                continue 
+             elif Estadi_menu=="3":
+               #plt.subplot(223)
+                plt.bar(nombres,hiperpulsor,label=("hiperpulso"),color="green",width=0.6)   
+                plt.title("hiperpulsor de naves") 
+                plt.xlabel('Nombre de naves')
+                plt.ylabel('magnitud')   
+                plt.xticks(rotation=90)         
+                plt.legend()  
+                plt.show()
+                continue
+             elif Estadi_menu=="4":
+               #plt.subplot(224)
+                plt.bar(nombres,mglt,label=("MGLB"),color="cyan",width=0.6)   
+                plt.title("MGLT de naves")  
+                plt.xlabel('Nombre de naves')
+                plt.ylabel('magnitud')  
+                plt.xticks(rotation=90)         
+                plt.legend() 
+                plt.show()
+                continue
+             elif Estadi_menu=="5":
+                  break
+             else:
+                  print("valor invalido\n") 
 
+    def Estadistica_nave(self): 
+        vel_max =[]
+        pro_vel=0
+        hiperpulsor=[]
+        pro_hipe=0
+        mglt=[]
+        pro_mglt=0
+        costos=[]
+        pro_costo=0
+        a=0
+        for nave in self.nave_lista:
+            nave:Nave
+            if nave.vel_max == "unknown" or nave.vel_max=="n/a":
+                a+=1    
+            elif nave.vel_max == "1000km":
+                vel_max.append(1000)
+            else:
+                vel_max.append(float(nave.vel_max))
+            if nave.costo == "unknown" or nave.costo=="n/a":
+                a+=1
+            else:
+                costos.append(float(nave.costo))   
+            if nave.hiperdrive == "unknown" or nave.hiperdrive=="n/a":
+                a+=1
+            else:
+                hiperpulsor.append(float(nave.hiperdrive))
+            if nave.MGLT == "unknown" or nave.MGLT=="n/a":
+                a+=1
+            else:
+                mglt.append(float(nave.MGLT))
+        for hiper in hiperpulsor:
+            pro_hipe+=hiper
+        pro_hipe/=len(hiperpulsor)  
+        for mg in mglt:
+            pro_mglt+=mg
+        pro_mglt/=len(mglt)    
+        for velocidades in vel_max:
+            pro_vel+=velocidades
+        pro_vel/=len(vel_max)    
+        for cos in costos:
+            pro_costo+=cos
+        pro_costo/=len(costos)  
+        moda_hipe = multimode(hiperpulsor)
+        moda_mglt= multimode(mglt)
+        moda_vlmx = multimode(vel_max)
+        moda_costo= multimode(costos)
+        hiperpulsor.sort()
+        mglt.sort()
+        vel_max.sort()
+        costos.sort()
+        max_hipe = hiperpulsor[len(hiperpulsor)-1]
+        max_mglt= mglt[len(mglt)-1]
+        max_vlmx = vel_max[len(vel_max)-1]
+        max_costo = costos[len(costos)-1]
+        min_hipe = hiperpulsor[0]
+        min_mglt= mglt[0]
+        min_vlmx = vel_max[0]
+        min_costo = costos[0]
+        while True: 
+            Estadi_menu=input(f"""Indiqueme que estadistica quiere ver de las naves
+{60*'-'}
+    1. Estadistica sobre los Hiperimpulsore
+    2. Estadistica sobre los MGLT
+    3. Estadistica sobre la velocidad maxima en atmosfera
+    4. Estadistica sobre el costo de las naves
+    5. Volver
+    ---> """)
+            if Estadi_menu =="1":
+                print(f"""
+    hiperimpulsor promedio: {pro_hipe}
+    moda de hiperimpulsores: {moda_hipe}
+    maximo hiperimpulsor registrado: {max_hipe}
+    minimo hiperimpulsor registrado: {min_hipe}""")
+                continue
+            elif Estadi_menu =="2":
+                print(f"""
+    MGLT promedio: {pro_mglt}
+    moda de MGLT: {moda_mglt}
+    maximo MGLT registrado: {max_mglt}
+    minimo MGLT registrado: {min_mglt}""")
+                continue
+            elif Estadi_menu =="3":
+                print(f"""
+    Promedio de la velocidad maxima en atmosfera: {pro_vel}
+    moda de la velocidad maxima en atmosfera: {moda_vlmx}
+    maxima velocidad en atmosfera registrado: {max_vlmx}
+    minimo velocidad en attmosfera registrado: {min_vlmx}""")
+                continue
+            elif Estadi_menu =="4":
+                print(f"""
+    Promedio de costo en credito de una nave: {pro_costo}
+    moda de costo de nave: {moda_costo}
+    maxima costo de una nave: {max_costo}
+    minimo costo de una nave: {min_costo}""")
+                continue
+                
+            elif Estadi_menu=="5":
+                break
 
-
-  
     def crear_especies(self):
 
             for id_specie in range(1, 38): #hay 37 especies en total
@@ -183,6 +392,8 @@ class APP:
                 pasajeros = datos_nave['passengers']
                 hiperdrive = datos_nave['hyperdrive_rating']
                 MGLT = datos_nave['MGLT']
+                vel_max = datos_nave['max_atmosphering_speed']
+                costo = datos_nave['cost_in_credits']
                 pilotos_nave = []
                 for piloto_url in datos_nave['pilots']:
                     response_piloto = requests.get(piloto_url)
@@ -190,7 +401,7 @@ class APP:
                         datos_piloto = response_piloto.json()['result']['properties']
                         pilotos_nave.append(datos_piloto['name'])
                      
-                self.nave_lista.append(Nave(nombre, longitud, carga, crew, pasajeros, pilotos_nave, hiperdrive, MGLT))
+                self.nave_lista.append(Nave(nombre, longitud, carga, crew, pasajeros, pilotos_nave, hiperdrive, MGLT,vel_max,costo))
                 
             else:
                 continue
