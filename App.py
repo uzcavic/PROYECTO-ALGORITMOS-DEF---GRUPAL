@@ -122,7 +122,7 @@ class APP:
                     poblacion.append(float(planeta.habitantes))
             print(nombre)
             print(poblacion)    
-            plt.bar(nombre,poblacion, width=0.6)
+            plt.plot(nombre,poblacion, width=0.6)
             plt.title('Poblacion de cada planeta')
             plt.xlabel('Nombre de planetas')
             plt.ylabel('Poblacion')
@@ -160,7 +160,7 @@ class APP:
             else:
                 datos.append(nave.hiperdrive)
                 hiperpulsor.append(float(nave.hiperdrive))
-            if nave.MGLT == "unknown":
+            if nave.m == "unknown":
                     mglt.append(0)
                     datos.append(0)
             else:
