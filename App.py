@@ -56,7 +56,7 @@ class APP:
         5. Gráficos de la población de los planetas
         6. Gráficos diferenciadores de las naves
         7. Estadísticas básicas sobre valores de la nave
-        8. Crear misión                   
+        8. Menú de misiones                    
         9. Terminar el programa""")
                 opcion = input("---> ")
                 if opcion =="1":
@@ -397,7 +397,7 @@ class APP:
 
              #quiero hacer que se muestren por orden de id de episodio
             self.pelicula_lista.sort(key=lambda x: x.episode)
-            
+
 
 
 
@@ -568,7 +568,7 @@ class APP:
             persona.naves = ", ".join(persona.naves)    
 
 #Aquí va el menú de las misiones
-import clases as cl, os, utilities as ut
+import clases as cl, os, utilities as ut #esto va al principio del archivo
 
 class Mission:
     def __init__(self, name, destiny, star_ship) -> None:
