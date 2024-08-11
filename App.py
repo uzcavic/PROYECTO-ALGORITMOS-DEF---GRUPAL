@@ -21,91 +21,95 @@ class APP:
     
     
     def start(self):
+            
+            print('Cargando datos...')
+            self.crear_pelicula() 
+            self.crear_especies() 
+            self.crear_planeta() 
+            
+            self.crear_personaje() 
 
-        self.crear_pelicula() #completada
-        self.crear_especies() #completada
-        self.crear_planeta() #en curso
-        
-        self.crear_personaje() #en curso
+            self.relacionar_personajes_con_planetas()
+            '''for  planeta in self.planeta_lista:
+                planeta.showPlaneta()'''
 
-        self.relacionar_personajes_con_planetas()
-        for  planeta in self.planeta_lista:
-            planeta.showPlaneta()
+            self.crear_nave() 
+            '''print("NAVES")
+            for nave in self.nave_lista:
+                nave.showNave()'''
+            '''print("Vehículos")'''
+            self.crear_vehiculos() 
+            '''for vehiculo in self.vehiculos_lista:
+                vehiculo.showVehiculo()'''
+            self.relacionar_vehiculos_y_naves_con_personajes()
+            '''for personaje in self.personaje_lista:
+                personaje.showPersonaje()'''
+            
 
-        self.crear_nave() #en curso
-        print("NAVES")
-        for nave in self.nave_lista:
-            nave.showNave()
-        print("Vehiculos")
-        self.crear_vehiculos() #en curso
-        for vehiculo in self.vehiculos_lista:
-            vehiculo.showVehiculo()
-        self.relacionar_vehiculos_y_naves_con_personajes()
-        for personaje in self.personaje_lista:
-            personaje.showPersonaje()
-        while True:
-            menu= input("""Bienvenido viajero, indiqueme que decea saber del universo de star wars
-    1. lista de peliculas
-    2. lista de especies
-    3. lista de planetas
-    4. buscar personaje
-    5. graficos de la poblacion de los planetas
-    6. Graficos diferenciadores de las naves
-    7. Estadisticas basicas sobre valores de la nave
-    8. mision                   
-    9. Terminar el programa
-    ---> """).strip()
-            if menu =="2":
-                index=1
-                for especie in self.especie_lista:
-                    especie:Especie
-                    print(f"Especie N°{index}\n")
-                    especie.showEspecie()
-                    index+=1
-            elif menu =="1":
-                index=1
-                for pelicula in self.pelicula_lista:
-                    pelicula:Pelicula
-                    print(f"Pelicula N°{index}\n")
-                    pelicula.showPelicula()
-                    index+=1 
-            elif menu =="3":
-                index=1
-                for planeta in self.planeta_lista:
-                    planeta:Planeta
-                    print(f"Planeta N°{index}\n")
-                    planeta.showPlaneta()
-                    index+=1 
-            elif menu =="4":
-                for personaje in self.personaje_lista:
-                    personaje:Personaje
-                    personaje.showPersonaje()                         
-            elif menu =="5":
-                self.grafica_planetas()
-            elif menu =="6":
-                self.Grafica_nave()  
-            elif menu =="7":
-                 self.Estadistica_nave()    
-            elif menu =="9":
-                print("""Gracias y que la fuerza te acompañe
-                      
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⠀⢀⣤⣤⣤⣤⣤⣤⣤⠀⠀⠀⠀⢠⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⣼⣿⣿⣿⣿⣿⣿⣿⣇⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣟⠛⠛⠛⠛⠛⣿⣿⣿⣿⡟⠛⠛⠛⠛⠛⢠⣿⣿⣿⣿⠿⣿⣿⣿⣿⡀⠀⠀⢸⣿⣿⣿⣿⡏⠉⠉⢉⣿⣿⣿⣿⡇⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿⣿⣿⣷⡀⠀⠀⠀⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⣾⣿⣿⣿⡟⠀⢻⣿⣿⣿⣧⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠀⠀⠀⠀⠀
-⣤⣤⣤⣤⣤⣤⣤⣤⣤⣬⣿⣿⣿⣿⣿⣷⠀⠀⠀⣿⣿⣿⣿⡇⠀⠀⠀⠀⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⣤⣤⣤⣤⣤⣤
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏⠀⠀⠀⣿⣿⣿⣿⡇⠀⠀⠀⢀⣿⣿⣿⣿⡿⠿⠿⠿⠿⣿⣿⣿⣿⡀⢸⣿⣿⣿⣿⡇⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠟⠛⠁⠀⠀⠀⠀⠿⠿⠿⠿⠇⠀⠀⠀⠸⠿⠿⠿⠟⠀⠀⠀⠀⠀⠻⠿⠿⠿⠇⠸⠿⠿⠿⠿⠇⠀⠀⠙⠛⠿⠿⠿⠿⠿⠿⠿⠿
-⢻⣿⣿⣿⣿⡄⢠⣿⣿⣿⣿⣿⡆⠀⣾⣿⣿⣿⡟⠀⢀⣾⣿⣿⣿⣿⣿⣿⡄⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣷⣶⣦⣄⠀⠀⠀⠀⣠⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿
-⠈⣿⣿⣿⣿⣷⣼⣿⣿⣿⣿⣿⣿⣸⣿⣿⣿⣿⠁⠀⣼⣿⣿⣿⣿⣿⣿⣿⣷⠀⠀⠀⠀⣿⣿⣿⣿⣿⠿⠿⢿⣿⣿⣿⣿⣇⠀⠀⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡏⠀⢠⣿⣿⣿⣿⠏⢿⣿⣿⣿⣇⠀⠀⠀⣿⣿⣿⣿⣿⣀⣀⣀⣼⣿⣿⣿⡟⠀⠀⢹⣿⣿⣿⣿⣿⣄⠀⠀⠀⠀⠀
-⠀⠀⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⣾⣿⣿⣿⣟⣀⣸⣿⣿⣿⣿⡀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠁⠀⠀⠀⠙⢿⣿⣿⣿⣿⣧⠀⠀⠀⠀
-⠀⠀⠘⣿⣿⣿⣿⣿⣿⠋⣿⣿⣿⣿⣿⣿⠇⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣶⣶⣶⣶⣶⣶⣾⣿⣿⣿⣿⣿⠇⠀⠀⠀
-⠀⠀⠀⢻⣿⣿⣿⣿⡏⠀⢹⣿⣿⣿⣿⡟⠀⢀⣿⣿⣿⣿⡟⠛⠛⠛⠛⣿⣿⣿⣿⡆⠀⣿⣿⣿⣿⣿⠀⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠀⠀⠀⠀
-⠀⠀⠀⠈⠉⠉⠉⠉⠀⠀⠀⠉⠉⠉⠉⠁⠀⠈⠉⠉⠉⠉⠀⠀⠀⠀⠀⠉⠉⠉⠉⠉⠀⠉⠉⠉⠉⠉⠀⠀⠀⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠁⠀⠀⠀⠀⠀                      """)
-                break    
-            else:
-                print("Lo lamento no se que quisiste poner") 
+
+            while True:
+                print("""Bienvenido viajero, indique qué desea saber del universo de Star Wars
+        1. Ver lista de peliculas
+        2. Ver lista de especies
+        3. Ver lista de planetas
+        4. Buscar personaje
+        5. Gráficos de la población de los planetas
+        6. Gráficos diferenciadores de las naves
+        7. Estadísticas básicas sobre valores de la nave
+        8. Crear misión                   
+        9. Terminar el programa""")
+                opcion = input("---> ")
+                if opcion =="1":
+                    contador=1
+                    for pelicula in self.pelicula_lista:
+                        pelicula:Pelicula
+                        print(f"Pelicula N°{contador}\n")
+                        pelicula.showPelicula()
+                        contador+=1 
+                elif opcion =="2":
+                    contador=1
+                    for especie in self.especie_lista:
+                        especie:Especie
+                        print(f"Especie N°{contador}\n")
+                        especie.showEspecie()
+                        contador+=1
+                elif opcion =="3":
+                    contador=1
+                    for planeta in self.planeta_lista:
+                        planeta:Planeta
+                        print(f"Planeta N°{contador}\n")
+                        planeta.showPlaneta()
+                        contador+=1 
+                elif opcion =="4":
+                    for personaje in self.personaje_lista:
+                        personaje:Personaje
+                        personaje.showPersonaje()                         
+                elif opcion =="5":
+                    self.grafica_planetas()
+                elif opcion =="6":
+                    self.Grafica_nave()  
+                elif opcion =="7":
+                    self.Estadistica_nave()    
+                elif opcion =="9":
+                    print("""Gracias y que la fuerza te acompañe
+                        
+    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⠀⢀⣤⣤⣤⣤⣤⣤⣤⠀⠀⠀⠀⢠⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣀⠀⠀⠀⠀⠀⠀
+    ⠀⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⣼⣿⣿⣿⣿⣿⣿⣿⣇⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡀⠀⠀⠀⠀
+    ⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣟⠛⠛⠛⠛⠛⣿⣿⣿⣿⡟⠛⠛⠛⠛⠛⢠⣿⣿⣿⣿⠿⣿⣿⣿⣿⡀⠀⠀⢸⣿⣿⣿⣿⡏⠉⠉⢉⣿⣿⣿⣿⡇⠀⠀⠀⠀
+    ⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿⣿⣿⣷⡀⠀⠀⠀⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⣾⣿⣿⣿⡟⠀⢻⣿⣿⣿⣧⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠀⠀⠀⠀⠀
+    ⣤⣤⣤⣤⣤⣤⣤⣤⣤⣬⣿⣿⣿⣿⣿⣷⠀⠀⠀⣿⣿⣿⣿⡇⠀⠀⠀⠀⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⣤⣤⣤⣤⣤⣤
+    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏⠀⠀⠀⣿⣿⣿⣿⡇⠀⠀⠀⢀⣿⣿⣿⣿⡿⠿⠿⠿⠿⣿⣿⣿⣿⡀⢸⣿⣿⣿⣿⡇⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+    ⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠟⠛⠁⠀⠀⠀⠀⠿⠿⠿⠿⠇⠀⠀⠀⠸⠿⠿⠿⠟⠀⠀⠀⠀⠀⠻⠿⠿⠿⠇⠸⠿⠿⠿⠿⠇⠀⠀⠙⠛⠿⠿⠿⠿⠿⠿⠿⠿
+    ⢻⣿⣿⣿⣿⡄⢠⣿⣿⣿⣿⣿⡆⠀⣾⣿⣿⣿⡟⠀⢀⣾⣿⣿⣿⣿⣿⣿⡄⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣷⣶⣦⣄⠀⠀⠀⠀⣠⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿
+    ⠈⣿⣿⣿⣿⣷⣼⣿⣿⣿⣿⣿⣿⣸⣿⣿⣿⣿⠁⠀⣼⣿⣿⣿⣿⣿⣿⣿⣷⠀⠀⠀⠀⣿⣿⣿⣿⣿⠿⠿⢿⣿⣿⣿⣿⣇⠀⠀⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+    ⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡏⠀⢠⣿⣿⣿⣿⠏⢿⣿⣿⣿⣇⠀⠀⠀⣿⣿⣿⣿⣿⣀⣀⣀⣼⣿⣿⣿⡟⠀⠀⢹⣿⣿⣿⣿⣿⣄⠀⠀⠀⠀⠀
+    ⠀⠀⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⣾⣿⣿⣿⣟⣀⣸⣿⣿⣿⣿⡀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠁⠀⠀⠀⠙⢿⣿⣿⣿⣿⣧⠀⠀⠀⠀
+    ⠀⠀⠘⣿⣿⣿⣿⣿⣿⠋⣿⣿⣿⣿⣿⣿⠇⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣶⣶⣶⣶⣶⣶⣾⣿⣿⣿⣿⣿⠇⠀⠀⠀
+    ⠀⠀⠀⢻⣿⣿⣿⣿⡏⠀⢹⣿⣿⣿⣿⡟⠀⢀⣿⣿⣿⣿⡟⠛⠛⠛⠛⣿⣿⣿⣿⡆⠀⣿⣿⣿⣿⣿⠀⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠀⠀⠀⠀
+    ⠀⠀⠀⠈⠉⠉⠉⠉⠀⠀⠀⠉⠉⠉⠉⠁⠀⠈⠉⠉⠉⠉⠀⠀⠀⠀⠀⠉⠉⠉⠉⠉⠀⠉⠉⠉⠉⠉⠀⠀⠀⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠁⠀⠀⠀⠀⠀                      """)
+                    break    
+                else:
+                    print("Opción inválida, intente de nuevo")
 
 
     def grafica_planetas(self):            
@@ -389,7 +393,11 @@ class APP:
                 release_date = pelicula["release_date"]
                 opening_crawl = pelicula["opening_crawl"]
                 nueva_pelicula = Pelicula(title, episode, release_date, opening_crawl, director)
-                self.pelicula_lista.append(nueva_pelicula)  
+                self.pelicula_lista.append(nueva_pelicula) 
+
+             #quiero hacer que se muestren por orden de id de episodio
+            self.pelicula_lista.sort(key=lambda x: x.episode)
+            
 
 
 
