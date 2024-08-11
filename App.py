@@ -122,7 +122,7 @@ class APP:
                     poblacion.append(float(planeta.habitantes))
             print(nombre)
             print(poblacion)    
-            plt.plot(nombre,poblacion, width=0.6)
+            plt.bar(nombre,poblacion, width=0.6)
             plt.title('Poblacion de cada planeta')
             plt.xlabel('Nombre de planetas')
             plt.ylabel('Poblacion')
