@@ -126,7 +126,7 @@ class APP:
             plt.title('Poblacion de cada planeta')
             plt.xlabel('Nombre de planetas')
             plt.ylabel('Poblacion')
-            plt.xticks(rotation=45)
+            plt.xticks(rotation=90)
             plt.show()
                     
     def Grafica_nave(self):        
@@ -160,7 +160,7 @@ class APP:
             else:
                 datos.append(nave.hiperdrive)
                 hiperpulsor.append(float(nave.hiperdrive))
-            if nave.mgl == "unknown":
+            if nave.MGLT == "unknown":
                     mglt.append(0)
                     datos.append(0)
             else:
