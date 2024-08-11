@@ -7,3 +7,8 @@ def validation(num, min, max):
             print(f"Número incorrecto, porfavor recuerde que sus valores van desde {min} hasta {max}")
             num = int(input())
             
+def agregar_mission(ruta, mission: object):
+    guns = [_.name for _ in mission.guns]
+    characters = [_.name for _ in mission.characters]
+    with open(ruta, "a", encoding= "UTF-8") as db:
+        db.write(f"{mission.name};{mission.destiny.name};{mission.star_ship.name};{guns};{characters};\n")
