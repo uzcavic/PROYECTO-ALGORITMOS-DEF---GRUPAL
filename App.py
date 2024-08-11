@@ -160,7 +160,7 @@ class APP:
             else:
                 datos.append(nave.hiperdrive)
                 hiperpulsor.append(float(nave.hiperdrive))
-            if nave.m == "unknown":
+            if nave.MGLT == "unknown":
                     mglt.append(0)
                     datos.append(0)
             else:
