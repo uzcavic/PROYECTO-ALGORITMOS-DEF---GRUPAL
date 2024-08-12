@@ -1,3 +1,4 @@
+from tkinter import N
 import requests
 from Usuario import Usuario
 from Armas import Armas
@@ -12,28 +13,30 @@ import pandas as pd
 from statistics import mean, multimode
 
 class APP:
+
     especie_lista = []
     pelicula_lista = []
     personaje_lista = []
     planeta_lista = []
-    CSV_planeta_lista = []
-    nave_lista=[]
-    CSV_nave_lista = []
+    nave_lista = []
     vehiculos_lista = []
-    arma_lista = [] 
-    misiones_usuario_lista = []
+    arma_lista = []
+    usuario_lista = []
     personaje_especie = {}
     personaje_nave = {} 
-    personaje_planeta = {}    
+    personaje_planeta = {} 
+    CSV_planeta_lista = []
+    CSV_nave_lista = []   
     
     
     def start(self):
+            print('Cargando datos...')
+            print('Espere un momento, por favor')
             self.CSV_Crear_nave()
             self.CSV_Crear_planetas()
-            self.crear_arma()
-            '''for arma in self.arma_lista:
-                arma.showArmas()'''
-            print('Cargando datos...')
+            '''self.crear_arma()
+            for arma in self.arma_lista:
+                arma.showArmas()
             self.crear_pelicula() 
             self.crear_especies() 
             self.crear_planeta() 
@@ -41,76 +44,81 @@ class APP:
             self.crear_personaje() 
 
             self.relacionar_personajes_con_planetas()
-            '''for  planeta in self.planeta_lista:
-                planeta.showPlaneta()'''
+            for  planeta in self.planeta_lista:
+                planeta.showPlaneta()
 
             self.crear_nave() 
-            '''print("NAVES")
+            print("NAVES")
             for nave in self.nave_lista:
-                nave.showNave()'''
-            '''print("Vehículos")'''
+                nave.showNave()
+            print("Vehículos")
             self.crear_vehiculos() 
-            '''for vehiculo in self.vehiculos_lista:
-                vehiculo.showVehiculo()'''
+            for vehiculo in self.vehiculos_lista:
+                vehiculo.showVehiculo()
             self.relacionar_vehiculos_y_naves_con_personajes()
-            '''for personaje in self.personaje_lista:
+            for personaje in self.personaje_lista:
                 personaje.showPersonaje()'''
             self.mostrar_menu()
 
-            
 
+        
 
-            while True: #registrar usuario primero 
+    def mostrar_menu(self):
+        while True:
+            # Registro de usuario
+            while True:
+                print("Bienvenido a la galaxia de Star Wars! Necesitamos saber si eres un usuario registrado y si no regístese por favor.")
+                uid = input("Ingrese su ID: ").strip()
+                if uid in self.usuario_lista:
+                    print("Este ID ya está registrado.")
+                    continuar = input("¿Desea continuar al menú? (si/no): ").strip().lower()
+                    if continuar == 'si':
+                        break  
+                    else:
+                        print("Por favor, ingrese otro ID.")
+                else:
+                    nombre = input("Ingrese su nombre: ").strip()
+                    self.usuario_lista.append(uid)  # Agregar el ID a la lista de usuarios
+                    print(f"Usuario {nombre} registrado con éxito.")
+                    break  # Salir del bucle después de registrar
 
+            # Mostrar el menú después de registrar
+            while True:
                 print("""Bienvenido viajero, indique qué desea saber del universo de Star Wars
-                        1. Registrar usuario
-                        2. Ver lista de peliculas
-                        3. Ver lista de especies
-                        4. Ver lista de planetas
-                        5. Buscar personaje
-                        6. Gráficos de la población de los planetas
-                        7. Gráficos diferenciadores de las naves
-                        8. Estadísticas básicas sobre valores de la nave
-                        9. Menú de misiones                    
-                        10. Terminar el programa""")
-                opcion = input("---> ")
+                        1. Buscar personaje
+                        2. Ver lista de especies
+                        3. Ver lista de planetas
+                        4. Gráficos de la población de los planetas
+                        5. Gráficos diferenciadores de las naves
+                        6. Estadísticas básicas sobre valores de la nave
+                        7. Menú de misiones (aquí puedes crear, modificar y vizualizar tus misiones)                  
+                        8. Salir""")
+                opcion = input("---> ").strip()
+
                 if opcion == "1":
-                    nombre = input("Ingrese su nombre: ")
-                    uid= input("Ingrese su ID: ")
-
-
-                elif opcion =="2":
-                    contador=1
-                    for pelicula in self.pelicula_lista:
-                        pelicula:Pelicula
-                        print(f"Pelicula N°{contador}\n")
-                        pelicula.showPelicula()
-                        contador+=1 
-                elif opcion =="3":
-                    contador=1
+                    self.buscar_personaje()
+                elif opcion == "2":
+                    contador = 1
                     for especie in self.especie_lista:
-                        especie:Especie
+                        especie: Especie
                         print(f"Especie N°{contador}\n")
                         especie.showEspecie()
-                        contador+=1
-                elif opcion =="4":
-                    contador=1
+                        contador += 1
+                elif opcion == "3":
+                    contador = 1
                     for planeta in self.planeta_lista:
-                        planeta:Planeta
+                        planeta: Planeta
                         print(f"Planeta N°{contador}\n")
                         planeta.showPlaneta()
-                        contador+=1 
-                elif opcion =="5":
-                    for personaje in self.personaje_lista:
-                        personaje:Personaje
-                        personaje.showPersonaje()                         
-                elif opcion =="6":
+                        contador += 1
+                elif opcion == "4":
                     self.grafica_planetas()
+                elif opcion == "5":
+                    self.Grafica_nave()
+                elif opcion == "6":
+                    self.Estadistica_nave()
                 elif opcion =="7":
-                    self.Grafica_nave()  
-                elif opcion =="8":
-                    self.Estadistica_nave()    
-                elif opcion =="9":
+
                     print("""Gracias y que la fuerza te acompañe
                         
     ⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⠀⢀⣤⣤⣤⣤⣤⣤⣤⠀⠀⠀⠀⢠⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣀⠀⠀⠀⠀⠀⠀
@@ -127,10 +135,38 @@ class APP:
     ⠀⠀⠘⣿⣿⣿⣿⣿⣿⠋⣿⣿⣿⣿⣿⣿⠇⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣶⣶⣶⣶⣶⣶⣾⣿⣿⣿⣿⣿⠇⠀⠀⠀
     ⠀⠀⠀⢻⣿⣿⣿⣿⡏⠀⢹⣿⣿⣿⣿⡟⠀⢀⣿⣿⣿⣿⡟⠛⠛⠛⠛⣿⣿⣿⣿⡆⠀⣿⣿⣿⣿⣿⠀⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠀⠀⠀⠀
     ⠀⠀⠀⠈⠉⠉⠉⠉⠀⠀⠀⠉⠉⠉⠉⠁⠀⠈⠉⠉⠉⠉⠀⠀⠀⠀⠀⠉⠉⠉⠉⠉⠀⠉⠉⠉⠉⠉⠀⠀⠀⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠁⠀⠀⠀⠀⠀                      """)
+                    
                     break    
+                elif opcion == "8":
+                    print("Saliendo del menú...")
+                    break  # Salir del menú principal
                 else:
                     print("Opción inválida, intente de nuevo")
 
+            if opcion == "8":
+                continue  #volvemos al inicio   
+    
+    
+    def buscar_personaje(self):
+        busqueda = input("Ingrese parte del nombre del personaje a buscar: ").strip().lower()
+        resultados = []
+
+        for personaje in self.personaje_lista:
+            personaje: Personaje
+            # Comprobamos si la búsqueda está en el nombre del personaje
+            if busqueda in personaje.nombre.lower():
+                resultados.append(personaje)
+
+        if not resultados:
+            print("No se encontraron personajes que coincidan con la búsqueda.")
+        else:
+            print("Resultados de la búsqueda:")
+            contador = 1  
+            for personaje in resultados:
+                print(f"Personaje N°{contador}\n")
+                personaje.showPersonaje()  
+                contador += 1  
+                print("-" * 40) #esto es para que se vea mas ordenado
 
     def grafica_planetas(self):            
             nombre=[]
@@ -142,13 +178,11 @@ class APP:
                     poblacion.append(0)
                 else:
                     nombre.append(planeta.nombre)
-                    poblacion.append(float(planeta.habitantes))
-            print(nombre)
-            print(poblacion)    
+                    poblacion.append(float(planeta.habitantes))  
             plt.bar(nombre,poblacion, width=0.6)
-            plt.title('Poblacion de cada planeta')
+            plt.title('Población de cada planeta')
             plt.xlabel('Nombre de planetas')
-            plt.ylabel('Poblacion')
+            plt.ylabel('Población')
             plt.xticks(rotation=90)
             plt.show()
                     
@@ -200,10 +234,10 @@ class APP:
     ---> """)     
              if Estadi_menu=="1":          
                 #plt.subplot(221)
-                plt.title("longitudes des naves") 
+                plt.title("Longitudes de las naves") 
                 plt.bar(nombres,longtudes,label=("longitud"),color="blue",width=0.6)   
                 plt.xlabel('Nombre de naves')
-                plt.ylabel('magnitud')
+                plt.ylabel('Magnitud')
                 plt.xticks(rotation=90)         
                 plt.legend()
                 plt.show()
@@ -211,9 +245,9 @@ class APP:
              elif Estadi_menu=="2":
                 #plt.subplot(222)
                 plt.bar(nombres,carga,label=("carga"),color="red",width=0.6)   
-                plt.title("carga de naves")
+                plt.title("Carga de naves")
                 plt.xlabel('Nombre de naves')
-                plt.ylabel('magnitud')    
+                plt.ylabel('Magnitud')    
                 plt.xticks(rotation=90)         
                 plt.legend() 
                 plt.show()
@@ -221,9 +255,9 @@ class APP:
              elif Estadi_menu=="3":
                #plt.subplot(223)
                 plt.bar(nombres,hiperpulsor,label=("hiperpulso"),color="green",width=0.6)   
-                plt.title("hiperpulsor de naves") 
+                plt.title("Hiperpulsor de naves") 
                 plt.xlabel('Nombre de naves')
-                plt.ylabel('magnitud')   
+                plt.ylabel('Magnitud')   
                 plt.xticks(rotation=90)         
                 plt.legend()  
                 plt.show()
@@ -233,7 +267,7 @@ class APP:
                 plt.bar(nombres,mglt,label=("MGLB"),color="cyan",width=0.6)   
                 plt.title("MGLT de naves")  
                 plt.xlabel('Nombre de naves')
-                plt.ylabel('magnitud')  
+                plt.ylabel('Magnitud')  
                 plt.xticks(rotation=90)         
                 plt.legend() 
                 plt.show()
@@ -241,7 +275,7 @@ class APP:
              elif Estadi_menu=="5":
                   break
              else:
-                  print("valor invalido\n") 
+                  print("Valor inválido\n") 
 
     def Estadistica_nave(self): 
         vel_max =[]
@@ -418,7 +452,7 @@ class APP:
             self.pelicula_lista.sort(key=lambda x: x.episode_id)
 
     def crear_personaje(self):
-        personaje_planeta = {} 
+         
         for id_personaje in range(1, 83):
             id_personaje = str(id_personaje)
             print("Viendo personaje: " + str(id_personaje))
@@ -451,7 +485,11 @@ class APP:
                     nombre_planeta = "Desconocido"
 
                 lista_episodios = self.obtener_episodios_de_personaje(id_personaje)
-                nuevo_personaje = Personaje(nombre, nombre_planeta, lista_episodios, genero, especie, [], [])
+                episodios_str = ", ".join(lista_episodios)
+               
+
+
+                nuevo_personaje = Personaje(nombre, nombre_planeta, episodios_str, genero, especie, [], [])
                 self.personaje_lista.append(nuevo_personaje)
 
             else:  # Si el personaje no existe o no se puede acceder
@@ -490,15 +528,15 @@ class APP:
         archivo_nave = pd.read_csv("starships.csv") #se hace así
     
         for i in range(len(archivo_nave)):
-            nombre = archivo_nave.iloc[i][1]
-            longitud = archivo_nave.iloc[i][5]
-            capacidad_carga = archivo_nave.iloc[i][9]
-            clasificacion_hiperimpulsor = archivo_nave.iloc[i][11]
-            mgl = archivo_nave.iloc[i][12]
-            vel_max = archivo_nave.iloc[i][6]
-            costo = archivo_nave.iloc[i][4]
-            nueva_nave = Nave(nombre, longitud, capacidad_carga, clasificacion_hiperimpulsor, mgl,vel_max,costo)
-            self.CSV_nave_lista.append(nueva_nave)        
+            nombre = archivo_nave.iloc[i, 1]
+            longitud = archivo_nave.iloc[i, 5]
+            capacidad_carga = archivo_nave.iloc[i, 9]
+            clasificacion_hiperimpulsor = archivo_nave.iloc[i, 11]
+            mgl = archivo_nave.iloc[i, 12]
+            vel_max = archivo_nave.iloc[i, 6]
+            costo = archivo_nave.iloc[i, 4]
+            nueva_nave = Nave(nombre, longitud, capacidad_carga, 0, 0, 0, clasificacion_hiperimpulsor, mgl, vel_max, costo)
+            self.CSV_nave_lista.append(nueva_nave)       #ARREGLAR, FALTAN ARGUMENTOS
 
     def crear_vehiculos(self):
         for vehiculo_id in range(1, 40):
@@ -574,13 +612,13 @@ class APP:
     def CSV_Crear_planetas(self): 
         archivo_planeta = pd.read_csv("planets.csv") #se hace así
         for i in range(len(archivo_planeta)):
-            nombre = archivo_planeta.iloc[i][1]
-            periodo_orbita = archivo_planeta.iloc[i][4]
-            periodo_rotacion = archivo_planeta.iloc[i][3]
-            habitantes = archivo_planeta.iloc[i][6]
-            clima = archivo_planeta.iloc[i][8]
-            nuevo_planeta = Planeta(nombre, periodo_orbita, periodo_rotacion, habitantes, clima)
-            self.CSV_planeta_lista.append(nuevo_planeta)
+            nombre = archivo_planeta.iloc[i, 1]
+            periodo_orbita = archivo_planeta.iloc[i, 4]
+            periodo_rotacion = archivo_planeta.iloc[i, 3]
+            habitantes = archivo_planeta.iloc[i, 6]
+            clima = archivo_planeta.iloc[i, 8]
+            nuevo_planeta = Planeta(0, nombre, periodo_orbita, periodo_rotacion, habitantes, clima, 0, 0)
+            self.CSV_planeta_lista.append(nuevo_planeta) #ARREGLAR, FALTAN ARGUMENTOS
 
     def relacionar_personajes_con_planetas(self):
         for planeta in self.planeta_lista: #recorro la lista de planetas
@@ -612,11 +650,11 @@ class APP:
         archivo_armas = pd.read_csv("weapons.csv") #se hace así
     
         for i in range(len(archivo_armas)):
-            uid = archivo_armas.iloc[i][0]
-            nombre = archivo_armas.iloc[i][1]
-            modelo = archivo_armas.iloc[i][2]
-            tipo = archivo_armas.iloc[i][6]
-            descripcion = archivo_armas.iloc[i][7]
+            uid = archivo_armas.iloc[i, 0]
+            nombre = archivo_armas.iloc[i, 1]
+            modelo = archivo_armas.iloc[i, 2]
+            tipo = archivo_armas.iloc[i, 6]
+            descripcion = archivo_armas.iloc[i, 7]
 
             nueva_arma = Armas(uid, nombre, modelo, tipo, descripcion)
             self.arma_lista.append(nueva_arma)
@@ -724,12 +762,15 @@ class APP:
         #poner while
         print("indiqueme el destino al que quiere ir")
         index=1
+        lis_planeta=[]
         for planeta in self.planeta_lista:
             planeta:Planeta
+            lis_planeta.append(planeta.nombre)
             print(f"{index}-{planeta.nombre}")
+
             index+=1
         elccion = int(input("--> "))
-        planeta_1 = self.planeta_lista[elccion-1]
+        planeta_1 = lis_planeta[elccion-1]
 #poner while
         print("indiqueme la nave que quiere usar")
         index=1
