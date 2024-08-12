@@ -17,6 +17,7 @@ class APP:
     planeta_lista = []
     nave_lista = []
     vehiculos_lista = []
+    arma_lista = [] 
     personaje_especie = {}
     personaje_nave = {} 
     personaje_planeta = {}    
@@ -24,6 +25,8 @@ class APP:
     
     def start(self):
             self.crear_arma()
+            for arma in self.arma_lista:
+                arma.showArmas()
             print('Cargando datos...')
             self.crear_pelicula() 
             self.crear_especies() 
@@ -573,13 +576,17 @@ class APP:
         archivo_armas = pd.read_csv("weapons.csv") #se hace así
     
         for i in range(len(archivo_armas)):
-            modelo = archivo_armas.iloc[i][0]
-            tipo = archivo_armas.iloc[i][1]
-            descripcion = archivo_armas.iloc[i][2]
-            armas:Armas
-            nueva_arma = Armas(modelo, tipo, descripcion)
+            uid = archivo_armas.iloc[i][0]
+            nombre = archivo_armas.iloc[i][1]
+            modelo = archivo_armas.iloc[i][2]
+            tipo = archivo_armas.iloc[i][6]
+            descripcion = archivo_armas.iloc[i][7]
+
+            nueva_arma = Armas(uid, nombre, modelo, tipo, descripcion)
             self.arma_lista.append(nueva_arma)
-            armas.showArma()
+
+
+          
 
 
 #Aquí va el menú de las misiones
