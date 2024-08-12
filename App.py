@@ -26,9 +26,11 @@ class APP:
     
     
     def start(self):
+            self.CSV_Crear_nave()
+            self.CSV_Crear_planetas()
             self.crear_arma()
-            for arma in self.arma_lista:
-                arma.showArmas()
+            '''for arma in self.arma_lista:
+                arma.showArmas()'''
             print('Cargando datos...')
             self.crear_pelicula() 
             self.crear_especies() 
@@ -411,9 +413,6 @@ class APP:
              #quiero hacer que se muestren por orden de id de episodio
             self.pelicula_lista.sort(key=lambda x: x.episode_id)
 
-
-
-
     def crear_personaje(self):
         personaje_planeta = {} 
         for id_personaje in range(1, 83):
@@ -621,104 +620,98 @@ class APP:
 #Aquí va el menú de las misiones
 #Menú para el personaje
 
-def mostrar_menu():
-    print("¡Hola viajero! aquí vas a poder escoger tus misiones")
-    print("Menú de selección de personajes:")
-    for personaje in enumerate(personaje):
-        i=1
-        print(f"{i+1}. {personaje.nombre}")
-        i+=1
-    print(f"{i}. Salir")
+    def mostrar_menu_personajes(self):
+        print("¡Hola viajero! aquí vas a poder escoger tus misiones")
+        print("Menú de selección de personajes:")
+        for i, personaje in enumerate(self.personajes):
+            print(f"{i + 1}. {personaje.nombre}")
+        print(f"{len(self.personajes) + 1}. Salir")
 
-def seleccionar_personajes():
-    personajes_seleccionados = []
-    while True:
-        mostrar_menu()
-        opcion_pe=input("Ingresa el número del personaje que deseas seleccionar (7 max) o 'salir' para terminar: ")
-        
-        if opcion_pe=="8": 
-            print("Saliendo del menú...")
-            break
-        if opcion_pe.isdigit():
-            indice=int(opcion_pe)-1
-            if indice>=0 and indice<len(Personaje):
-                if Personaje[indice] not in personajes_seleccionados:
-                    personajes_seleccionados.append(Personaje[indice])
-                    print(f"Has seleccionado al personaje {Personaje[indice].nombre}.")
+    def seleccionar_personajes(self):
+        personajes_seleccionados = []
+        while True:
+            self.mostrar_menu_personajes()
+            opcion_pe = input("Ingresa el número del personaje que deseas seleccionar (7 max) o 'salir' para terminar: ")
+
+            if opcion_pe == str(len(self.personajes) + 1):
+                print("Saliendo del menú...")
+                break
+            if opcion_pe.isdigit():
+                indice = int(opcion_pe) - 1
+                if 0 <= indice < len(self.personajes):
+                    if self.personajes[indice] not in personajes_seleccionados:
+                        personajes_seleccionados.append(self.personajes[indice])
+                        print(f"Has seleccionado al personaje {self.personajes[indice].nombre}.")
+                    else:
+                        print("Este personaje ya ha sido seleccionado. Elige otro.")
                 else:
-                    print("Este personaje ya ha sido seleccionado. Elige otro.")
+                    print("Opción inválida. Intenta de nuevo.")
             else:
                 print("Opción inválida. Intenta de nuevo.")
+            if len(personajes_seleccionados) >= 7:
+                print("Has alcanzado el límite de selección de personajes.")
+                break
+
+        if personajes_seleccionados:
+            nombres_seleccionados = ", ".join([personaje.nombre for personaje in personajes_seleccionados])
+            print(f"Perfecto, has elegido a {nombres_seleccionados}.")
         else:
-            print("Opción inválida. Intenta de nuevo.")
-        if len(personajes_seleccionados)>=7:
-            print("Has alcanzado el límite de selección de personajes.")
-            break
+            print("No has seleccionado ningún personaje.")
 
-    if personajes_seleccionados:
-        nombres_seleccionados=", ".join([personaje.nombre for personaje in personajes_seleccionados])
-        print(f"Perfecto, has elegido a {nombres_seleccionados}.")
-    else:
-        print("No has seleccionado ningún personaje.")
+    def mostrar_menu_planetas(self):
+        print("Aquí podrás seleccionar el nombre del planeta para tu batalla:")
+        for i, planeta in enumerate(self.planetas):
+            print(f"{i + 1}.- {planeta.nombre}")
+        print("99.- Salir")
 
-#Menú para el planeta
-def mostrar_menu():
-    print("Aquí podrás seleccionar el nombre del planeta para tu batalla: ")
-    i=1
-    for planeta in enumerate(planeta):
-        print(f"{i}.- {planeta.nombre}")
-        i+=1
-    print("99.- Salir")
-
-def seleccionar_planeta():
-    planeta_seleccionado=None
-    while True:
-        mostrar_menu()
-        opcion_p=input("Ingresa aquí el número del planeta al que quieres viajar, o introduce 99 para salir: ")
-        if opcion_p=="99":
-            print("Saliendo del menú...")
-            break
-        if opcion_p.isdigit():
-            indice=int(opcion_p)-1
-            if indice>=0 and indice<len(Planeta):
-                planeta_seleccionado=Planeta[indice]
-                print(f"Has seleccionado el planeta {planeta_seleccionado.nombre}")
+    def seleccionar_planeta(self):
+        planeta_seleccionado = None
+        while True:
+            self.mostrar_menu_planetas()
+            opcion_p = input("Ingresa aquí el número del planeta al que quieres viajar, o introduce 99 para salir: ")
+            if opcion_p == "99":
+                print("Saliendo del menú...")
+                break
+            if opcion_p.isdigit():
+                indice = int(opcion_p) - 1
+                if 0 <= indice < len(self.planetas):
+                    planeta_seleccionado = self.planetas[indice]
+                    print(f"Has seleccionado el planeta {planeta_seleccionado.nombre}")
+                else:
+                    print("¡Opción inválida! Prueba con un número válido.")
             else:
-                print("¡Opción inválida! Prueba con un número entre 1 y 60")
-        else:
-            print("¡Opción inválida! Los números válidos son entre 1 y 60 para escoger, o 99 para salir")
-    
-    if planeta_seleccionado:
-        print(f"Perfecto, has elegido el planeta {planeta_seleccionado.nombre}.")
-    else:
-        print("No has seleccionado ningún planeta")
+                print("¡Opción inválida! Introduce un número válido.")
 
-#Menú para la nave
-def mostrar_menu():
-    print("Aquí podrás seleccionar el nombre de la en la que quieres viajar para tu batalla: ")
-    i=1
-    for nave in enumerate(nave):
-        print(f"{i}.- {nave.nombre}")
-        i+=1
-    print("99.- Salir")
-def seleccionar_nave():
-    nave_seleccionada=None
-    while True:
-        mostrar_menu()
-        opcion_n=input(f"Ingresa aquí el número de la nave al que quieres viajar, o introduce  para salir: ")
-        if opcion_n=="99":
-            print("Saliendo del menú...")
-            break
-        if opcion_n.isdigit():
-            indice=int(opcion_n)-1
-            if indice>=0 and indice<len(Nave):
-                nave_seleccionada=Nave[indice]
-                print(f"Has seleccionado la nave {nave_seleccionada.nombre}")
-            else:
-                print("¡Opción inválida! Prueba con un número entre 1 y 36")
+        if planeta_seleccionado:
+            print(f"Perfecto, has elegido el planeta {planeta_seleccionado.nombre}.")
         else:
-            print("¡Opción inválida! Los números válidos son entre 1 y 36 para escoger, o 99 para salir")
-    if nave_seleccionada:
-        print(f"Perfecto, has elegido la nave {nave_seleccionada.nombre}.")
-    else:
-        print("No has seleccionado ninguna nave")
+            print("No has seleccionado ningún planeta.")
+
+    def mostrar_menu_naves(self):
+        print("Aquí podrás seleccionar el nombre de la nave en la que quieres viajar:")
+        for i, nave in enumerate(self.naves):
+            print(f"{i + 1}.- {nave.nombre}")
+        print("99.- Salir")
+
+    def seleccionar_nave(self):
+        nave_seleccionada = None
+        while True:
+            self.mostrar_menu_naves()
+            opcion_n = input("Ingresa aquí el número de la nave al que quieres viajar, o introduce 99 para salir: ")
+            if opcion_n == "99":
+                print("Saliendo del menú...")
+                break
+            if opcion_n.isdigit():
+                indice = int(opcion_n) - 1
+                if 0 <= indice < len(self.naves):
+                    nave_seleccionada = self.naves[indice]
+                    print(f"Has seleccionado la nave {nave_seleccionada.nombre}")
+                else:
+                    print("¡Opción inválida! Prueba con un número válido.")
+            else:
+                print("¡Opción inválida! Introduce un número válido.")
+
+        if nave_seleccionada:
+            print(f"Perfecto, has elegido la nave {nave_seleccionada.nombre}.")
+        else:
+            print("No has seleccionado ninguna nave.")
