@@ -27,7 +27,8 @@ class APP:
     personaje_nave = {} 
     personaje_planeta = {} 
     CSV_planeta_lista = []
-    CSV_nave_lista = []   
+    CSV_nave_lista = [] 
+    CSV_personaje_lista = []  
     
     
     def start(self):
@@ -36,7 +37,7 @@ class APP:
             self.CSV_Crear_nave()
             self.CSV_Crear_planetas()
             self.crear_arma()
-            self.crear_personaje()
+            self.CSV_crear_personaje()
             """for arma in self.arma_lista:
                 arma.showArmas()
             self.crear_pelicula() 
@@ -498,6 +499,19 @@ class APP:
 
             else:  # Si el personaje no existe o no se puede acceder
                 continue
+    
+    def CSV_crear_personaje(self):
+        archivo_personaje = pd.read_csv("characters.csv") #se hace así
+    
+        for i in range(len(archivo_personaje)):
+            nombre = archivo_personaje.iloc[i, 1]
+            planeta_origen = archivo_personaje.iloc[i, 10]
+            genero = archivo_personaje.iloc[i, 3]
+            especiet = archivo_personaje.iloc[i, 2]
+            nuevo_personaje = Personaje(nombre, planeta_origen, 0,genero, especiet, 0, 0)
+            self.CSV_personaje_lista.append(nuevo_personaje)
+
+
 
     def crear_nave(self):
         for nave_id in range(1, 37):
@@ -795,7 +809,7 @@ class APP:
         while len(personajes)<7 and elige==True:
             print("indiqueme el personaje que quiere usar ")
             index=1
-            for personaje in self.personaje_lista:
+            for personaje in self.CSV_personaje_lista:
                 personaje:Personaje
                 print(f"{index}-{personaje.nombre}")
                 lis_persona.append(personaje.nombre)
@@ -832,3 +846,5 @@ class APP:
             print("Elige la misma cantidad de armas que de personajes escogigos\n")   
         nueva_mision = Mision(nombre, planeta_1, nave_1, personajes, armas)    
         self.mision_lista.append(nueva_mision)
+        with open("misiones.txt", "a") as m:
+            m.write(self.mi)
