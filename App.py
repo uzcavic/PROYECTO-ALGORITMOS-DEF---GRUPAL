@@ -927,9 +927,10 @@ class APP:
                 print("Opción inválida. Intenta de nuevo.")
 
     def guardar_misiones(self):
-        with open("misiones.txt", "w") as f:
+        with open("misiones.txt", "a") as f:
             for mision in self.mision_lista:
-                f.write(f"{mision.nombre},{mision.planeta},{mision.nave},{','.join(mision.personajes)},{','.join(mision.armas)}\n")
+                mision:Mision
+                f.write(f"{mision.nombre},{mision.planeta_destino},{mision.nave},{','.join(mision.integrantes)},{','.join(mision.armas)}\n")
         print("Misiones guardadas exitosamente.")
 
 
