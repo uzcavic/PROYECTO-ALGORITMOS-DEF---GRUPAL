@@ -17,6 +17,7 @@ class APP:
     personaje_lista = []
     planeta_lista = []
     CSV_planeta_lista = []
+    nave_lista=[]
     CSV_nave_lista = []
     vehiculos_lista = []
     arma_lista = [] 
@@ -718,3 +719,61 @@ class APP:
             print(f"Perfecto, has elegido la nave {nave_seleccionada.nombre}.")
         else:
             print("No has seleccionado ninguna nave.")
+
+    def crear_mision(self):  
+        #poner while
+        print("indiqueme el destino al que quiere ir")
+        index=1
+        for planeta in self.planeta_lista:
+            planeta:Planeta
+            print(f"{index}-{planeta.nombre}")
+            index+=1
+        elccion = int(input("--> "))
+        planeta_1 = self.planeta_lista[elccion-1]
+#poner while
+        print("indiqueme la nave que quiere usar")
+        index=1
+        for nave in self.nave_lista:
+            nave:Nave
+            print(f"{index}-{nave.nombre}")
+            index+=1
+        elccion = int(input("--> "))
+        nave_1 = self.nave_lista[elccion-1]
+
+        personajes=[]
+        elige=True
+        while len(personajes)<7 and elige==True:
+            print("indiqueme el personaje que quiere usar ")
+            index=1
+            for personaje in self.personaje_lista:
+                personaje:Personaje
+                print(f"{index}-{personaje.nombre}")
+                index+=1
+            elccion = int(input("--> "))
+            personaje = self.personaje_lista[elccion-1]
+            personajes.append(personaje)
+            
+            while True:
+                otro=input("""Quieres elegir a otro personaje
+        1. si
+        2. no 
+---> """)
+                if otro=="1":
+                    break
+                elif otro=="2":
+                    elige=False
+                    break
+                else:
+                    print("opcion invalida")
+        armas=[]
+        while len(armas)!=len(personajes):
+            print("indiqueme el personaje que quiere usar ")
+            index=1
+            for arma in self.arma_lista:
+                arma:Armas
+                print(f"{index}-{arma.nombre}")
+                index+=1
+            elccion = int(input("--> "))
+            arm = self.arma_lista[elccion-1]
+            personajes.append(arm)
+            print("Elige la misma cantidad de armas que de personajes escogigos\n")
