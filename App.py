@@ -396,7 +396,7 @@ class APP:
                 self.pelicula_lista.append(nueva_pelicula) 
 
              #quiero hacer que se muestren por orden de id de episodio
-            self.pelicula_lista.sort(key=lambda x: x.episode)
+            self.pelicula_lista.sort(key=lambda x: x.episode_id)
 
 
 
@@ -568,103 +568,3 @@ class APP:
             persona.naves = ", ".join(persona.naves)    
 
 #Aquí va el menú de las misiones
-import clases as cl, os, utilities as ut #esto va al principio del archivo
-
-class Mission:
-    def __init__(self, name, destiny, star_ship) -> None:
-        self.name = name
-        self.destiny = destiny
-        self.star_ship = star_ship
-        self.guns = []
-        self.characters = []
-    def show_mission(self):
-        return ""
-    def append_gun(self, gun):
-        self.guns.append(gun)
-    def append_ch(self, ch):
-        self.characters.append(ch)
-
-#Creamos instancias de prueba para probar al menú. Deben ser cambiadas por las listas de cada una
-obj_prueba_1 = cl.Planet("Nombre planeta", 90, 80, 1000000, "Mixto")
-obj_prueba_2 = cl.Character("Nombre personaje", obj_prueba_1, "Male", "Homosapiens") 
-obj_prueba_3 = cl.Gun("Rifle .177", 90)
-obj_prueba_4 = cl.StarShip("Estrella de la muerte", 40000, "T-908", "idk")
-
-#MENÚ
-def menu(c_arr, g_arr, pl_arr, stsh_arr, missions):
-    while True:
-        while True:
-            try:
-                elec = ut.validation(int(input("Bienvenido a la creación de missiones! Elija qué desea hacer:\n>1. Crear una misión\n>2. Modificar misiones\n>3. Ver misiones\n>4. Salir\n\n>>>")), 1, 4)
-                break
-            except ValueError:
-                os.system("clear")
-                print("ERROR!, solo se admiten números como respuesta")
-        os.system("clear")
-        
-        if elec == 1: #Creación de misión
-            input("¡Bienvenido a la creación de misiones!\n")
-            for _ in pl_arr:
-                cc=1
-                print(f">{cc}. {_.name}")
-            while True:
-                try:
-                    pl=ut.validation(int(input("Perfecto, elija el número del planeta donde se va a desarrollar su misión.")), 1, len(pl_arr))
-                    break
-                except ValueError:
-                    print("ERROR!, solo se admiten números como respuesta")
-            #Selección de la nave
-            for _ in stsh_arr:
-                cc=1
-                print(f">{cc}. {_.name}")
-            while True:
-                try:
-                    stsh=ut.validation(int(input("Perfecto, elija el número de la nave a utilizar.")), 1, len(stsh_arr))
-                    break
-                except ValueError:
-                    print("ERROR!, solo se admiten números como respuesta")
-            #Creación de mision.
-            ms = Mission(f"Batalla de {pl.arr[pl-1]}", pl_arr[pl-1], stsh_arr[stsh-1])
-            #Selección de armas y agregarlos a la mision
-            for _ in g_arr:
-                cc=1
-                print(f">{cc}. {_.name}")
-            while True:
-                try:
-                    gun=ut.validation(int(input("Perfecto, elija el número de las armas a utilizar en su misión.")),  1, len(g_arr))
-                    break
-                except ValueError:
-                    print("ERROR!, solo se admiten números como respuesta")
-            ms.append_gun(g_arr[gun-1])
-            #Seleccione a los personajes y agregarlos a la mision
-            for _ in c_arr:
-                cc=1
-                print(f">{cc}. {_.name}")
-            while True:
-                try:
-                    charac=ut.validation(int(input("Perfecto, elija el número del planeta donde se va a desarrollar su misión.")),  1, len(c_arr))
-                    break
-                except ValueError:
-                    print("ERROR!, solo se admiten números como respuesta")
-               
-            ms.append_ch(c_arr[charac-1])
-            #Almacenado de la misión en la base de datos
-            ut.agregar_mission("mission.txt", ms)
-            print(f"Misión {ms.name} creada exitosamente")
-            
-        elif elec == 2: #Edición de misión
-            pass
-        elif elec ==3: #Ver misiones
-            pass
-        else: #Salir del menú
-            break
-        
-    return missions
-
-c_arr = [obj_prueba_2]
-g_arr = [obj_prueba_3]
-pl_arr = [obj_prueba_1]
-stsh_arr = [obj_prueba_4]
-missions = []
-
-menu(c_arr, g_arr, pl_arr, stsh_arr, missions)
