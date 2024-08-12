@@ -38,8 +38,8 @@ class APP:
             self.CSV_Crear_planetas()
             self.crear_arma()
             self.CSV_crear_personaje()
-            """for arma in self.arma_lista:
-                arma.showArmas()
+            '''for arma in self.arma_lista:
+                arma.showArmas()'''
             self.crear_pelicula() 
             self.crear_especies() 
             self.crear_planeta() 
@@ -47,20 +47,20 @@ class APP:
             self.crear_personaje() 
 
             self.relacionar_personajes_con_planetas()
-            for  planeta in self.planeta_lista:
-                planeta.showPlaneta()
+            '''for  planeta in self.planeta_lista:
+                planeta.showPlaneta()'''
 
             self.crear_nave() 
             print("NAVES")
-            for nave in self.nave_lista:
-                nave.showNave()
-            print("Vehículos")
+            '''for nave in self.nave_lista:
+                nave.showNave()'''
+            '''print("Vehículos")'''
             self.crear_vehiculos() 
-            for vehiculo in self.vehiculos_lista:
-                vehiculo.showVehiculo()
+            '''for vehiculo in self.vehiculos_lista:
+                vehiculo.showVehiculo()'''
             self.relacionar_vehiculos_y_naves_con_personajes()
-            for personaje in self.personaje_lista:
-                personaje.showPersonaje()"""
+            '''for personaje in self.personaje_lista:
+                personaje.showPersonaje()'''
             self.mostrar_menu()
 
 
@@ -121,7 +121,25 @@ class APP:
                 elif opcion == "6":
                     self.Estadistica_nave()
                 elif opcion =="7":
-                    self.crear_mision()
+                    while True:
+                        print("""Menú de Misiones:
+                        1. Crear Misión
+                        2. Modificar Misión
+                        3. Visualizar Misiones
+                        4. Volver al menú principal""")
+                        opcion_mision = input("---> ").strip()
+
+                        if opcion_mision == "1":
+                            self.crear_mision()  # Llama al método para crear una nueva misión
+                        elif opcion_mision == "2":
+                            self.modificar_misiones()  # Llama al método para modificar misiones existentes
+                        elif opcion_mision == "3":
+                            self.visualizar_misiones()  # Llama al método para visualizar las misiones
+                        elif opcion_mision == "4":
+                            print("Volviendo al menú principal...")
+                            break  # Sale del bucle y vuelve al menú principal
+                        else:
+                            print("Opción inválida. Intenta de nuevo.")
                 elif opcion == "8":    
 
                     print("""Gracias y que la fuerza te acompañe
@@ -680,6 +698,43 @@ class APP:
 #Aquí va el menú de las misiones
 #Menú para el personaje
 
+
+
+
+
+    def seleccionar_armas(self, num_armas):
+        armas_seleccionadas = []
+        while True:
+            print('Menú de selección de armas:')
+            print("Menú de selección de armas:")
+            for i, arma in enumerate(self.armas):
+                print(f"{i + 1}. {arma.nombre}")
+            print("8. Salir")
+            
+            opcion = input("Ingresa el número del arma que deseas seleccionar (1-8) o '0' para terminar: ")
+            if opcion == "0":
+                print("Saliendo del menú de armas...")
+                break
+            if opcion.isdigit():
+                indice = int(opcion) - 1
+                if 0 <= indice < len(self.armas):
+                    if self.armas[indice] not in armas_seleccionadas:
+                        armas_seleccionadas.append(self.armas[indice])
+                        print(f"Has seleccionado el arma {self.armas[indice].nombre}.")
+                    else:
+                        print("Esta arma ya ha sido seleccionada. Elige otra.")
+                else:
+                    print("Opción inválida. Intenta de nuevo.")
+            else:
+                print("Opción inválida. Intenta de nuevo.")
+
+            if len(armas_seleccionadas) >= num_armas:
+                print(f"Has seleccionado el número requerido de armas: {num_armas}.")
+                break
+
+        return armas_seleccionadas
+
+
     def mostrar_menu_personajes(self):
         print("¡Hola viajero! aquí vas a poder escoger tus misiones")
         print("Menú de selección de personajes:")
@@ -692,7 +747,6 @@ class APP:
         while True:
             self.mostrar_menu_personajes()
             opcion_pe = input("Ingresa el número del personaje que deseas seleccionar (7 max) o 'salir' para terminar: ")
-
             if opcion_pe == str(len(self.personajes) + 1):
                 print("Saliendo del menú...")
                 break
@@ -720,32 +774,32 @@ class APP:
 
     def mostrar_menu_planetas(self):
         print("Aquí podrás seleccionar el nombre del planeta para tu batalla:")
-        for i, planeta in enumerate(self.planetas):
+        for i, planeta in enumerate(self.planeta_lista):
             print(f"{i + 1}.- {planeta.nombre}")
         print("99.- Salir")
 
     def seleccionar_planeta(self):
-        planeta_seleccionado = None
         while True:
             self.mostrar_menu_planetas()
-            opcion_p = input("Ingresa aquí el número del planeta al que quieres viajar, o introduce 99 para salir: ")
+            opcion_p = input("\nIngresa aquí el número del planeta al que quieres viajar, o introduce 99 para salir: ")
             if opcion_p == "99":
-                print("Saliendo del menú...")
-                break
+                print("\nSaliendo del menú...")
+                return None  # Salir y devolver None
             if opcion_p.isdigit():
                 indice = int(opcion_p) - 1
-                if 0 <= indice < len(self.planetas):
-                    planeta_seleccionado = self.planetas[indice]
-                    print(f"Has seleccionado el planeta {planeta_seleccionado.nombre}")
+                if 0 <= indice < len(self.planeta_lista):
+                    planeta_seleccionado = self.planeta_lista[indice]
+                    print(f"\nHas seleccionado el planeta {planeta_seleccionado.nombre}")
+                    return planeta_seleccionado  # Devolver el planeta seleccionado
                 else:
                     print("¡Opción inválida! Prueba con un número válido.")
             else:
                 print("¡Opción inválida! Introduce un número válido.")
 
-        if planeta_seleccionado:
-            print(f"Perfecto, has elegido el planeta {planeta_seleccionado.nombre}.")
-        else:
-            print("No has seleccionado ningún planeta.")
+            if planeta_seleccionado:
+                print(f"Perfecto, has elegido el planeta {planeta_seleccionado.nombre}.")
+            else:
+                print("No has seleccionado ningún planeta.")
 
     def mostrar_menu_naves(self):
         print("Aquí podrás seleccionar el nombre de la nave en la que quieres viajar:")
@@ -754,98 +808,149 @@ class APP:
         print("99.- Salir")
 
     def seleccionar_nave(self):
-        nave_seleccionada = None
         while True:
             self.mostrar_menu_naves()
             opcion_n = input("Ingresa aquí el número de la nave al que quieres viajar, o introduce 99 para salir: ")
             if opcion_n == "99":
                 print("Saliendo del menú...")
-                break
+                return None  # Salir y devolver None
             if opcion_n.isdigit():
                 indice = int(opcion_n) - 1
                 if 0 <= indice < len(self.naves):
                     nave_seleccionada = self.naves[indice]
                     print(f"Has seleccionado la nave {nave_seleccionada.nombre}")
+                    return nave_seleccionada  # Devolver la nave seleccionada
                 else:
                     print("¡Opción inválida! Prueba con un número válido.")
             else:
                 print("¡Opción inválida! Introduce un número válido.")
 
-        if nave_seleccionada:
-            print(f"Perfecto, has elegido la nave {nave_seleccionada.nombre}.")
-        else:
-            print("No has seleccionado ninguna nave.")
-
     def crear_mision(self):  
-        #poner while
-        print("indiqueme el destino al que quiere ir")
-        index=1
-        lis_planeta=[]
-        for planeta in self.CSV_planeta_lista:
-            planeta:Planeta
-            lis_planeta.append(planeta.nombre)
-            print(f"{index}-{planeta.nombre}")
+        if len(self.mision_lista) >= 5:  # hasta 5 misiones
+            print("Ya has alcanzado el límite de 5 misiones.")
+            return
 
-            index+=1
-        elccion = int(input("--> "))
-        planeta_1 = lis_planeta[elccion-1]
+        # Selección de planeta
+        print("Indíqueme el destino al que quiere ir:")
+        planeta_seleccionado = self.seleccionar_planeta()
+        if not planeta_seleccionado:  
+            print("No se seleccionó ningún planeta. Cancela la creación de la misión.")
+            return
 
-        nombre = "batalla de "+ planeta_1
-#poner while
-        print("indiqueme la nave que quiere usar")
-        lis_nave=[]
-        index=1
-        for nave in self.CSV_nave_lista:
-            nave:Nave
-            lis_nave.append(nave.nombre)
-            print(f"{index}-{nave.nombre}")
-            index+=1
-        elccion = int(input("--> "))
-        nave_1 = lis_nave[elccion-1]
+        # Selección de nave
+        print("Indíqueme la nave que quiere usar:")
+        nave_seleccionada = self.seleccionar_nave()
+        if not nave_seleccionada: 
+            print("No se seleccionó ninguna nave. Cancela la creación de la misión.")
+            return
 
-        personajes=[]
-        lis_persona=[]
-        elige=True
-        while len(personajes)<7 and elige==True:
-            print("indiqueme el personaje que quiere usar ")
-            index=1
-            for personaje in self.CSV_personaje_lista:
-                personaje:Personaje
-                print(f"{index}-{personaje.nombre}")
-                lis_persona.append(personaje.nombre)
-                index+=1
-            elccion = int(input("--> "))
-            personaje = lis_persona[elccion-1]
-            personajes.append(personaje)
-            
-            while True:
-                otro=input("""Quieres elegir a otro personaje
-        1. si
-        2. no 
----> """)
-                if otro=="1":
-                    break
-                elif otro=="2":
-                    elige=False
-                    break
-                else:
-                    print("opcion invalida")
-        armas=[]
-        lis_arma=[]
-        while not len(armas)==len(personajes):
-            print("indiqueme el personaje que quiere usar ")
-            index=1
-            for arma in self.arma_lista:
-                arma:Armas
-                print(f"{index}-{arma.nombre}")
-                lis_arma.append(arma.nombre)
-                index+=1
-            elccion = int(input("--> "))
-            arm = lis_arma[elccion-1]
-            armas.append(arm)
-            print("Elige la misma cantidad de armas que de personajes escogigos\n")   
-        nueva_mision = Mision(nombre, planeta_1, nave_1, personajes, armas)    
+        # Selección de personajes
+        personajes = self.seleccionar_personajes()
+        if not personajes:  
+            print("Debes seleccionar al menos un personaje. Cancela la creación de la misión.")
+            return
+
+        # Selección de armas
+        armas = self.seleccionar_armas(7)
+
+        # Crear la misión
+        nombre = f"batalla de {planeta_seleccionado.nombre}"
+        nueva_mision = Mision(nombre, planeta_seleccionado, nave_seleccionada, personajes, armas)    
         self.mision_lista.append(nueva_mision)
-        ##Creo que esto fue lo que Andrés me pidió que eliminara (no quise hacerlo por si las moscas)
-        """with open("misiones.txt", "a") as m:
-            m.write(self.mi)"""
+
+        print(f"Misión '{nombre}' creada exitosamente.")
+
+    def modificar_misiones(self):
+        while True:
+            print("\nSelecciona la misión que deseas modificar:")
+            for i, mision in enumerate(self.mision_lista):
+                print(f"{i + 1}. {mision.nombre}")
+            
+            opcion = input("Ingresa el número de la misión que deseas modificar o 'salir' para terminar: ")
+            if opcion.isdigit() and 1 <= int(opcion) <= len(self.mision_lista):
+                mision_seleccionada = self.mision_lista[int(opcion) - 1]
+                print(f"\nModificando la misión: {mision_seleccionada.nombre}")
+
+                # Menú para modificar atributos
+                while True:
+                    print("\n¿Qué deseas modificar?")
+                    print("1. Personajes")
+                    print("2. Nave")
+                    print("3. Armas")
+                    print("4. Planeta")
+                    print("5. Salir de la modificación")
+
+                    sub_opcion = input("Selecciona una opción: ")
+                    if sub_opcion == "1":
+                        personajes_nuevos = self.seleccionar_personajes()
+                        if personajes_nuevos:
+                            mision_seleccionada.personajes = personajes_nuevos
+                            print("Personajes actualizados.")
+                        else:
+                            print("No se seleccionaron personajes.")
+
+                    elif sub_opcion == "2":
+                        nave_nueva = self.seleccionar_nave()
+                        if nave_nueva:
+                            mision_seleccionada.nave = nave_nueva
+                            print("Nave actualizada.")
+                        else:
+                            print("No se seleccionó ninguna nave.")
+
+                    elif sub_opcion == "3":
+                        armas_nuevas = self.seleccionar_armas()  # O especificar un límite si es necesario
+                        if armas_nuevas:
+                            mision_seleccionada.armas = armas_nuevas
+                            print("Armas actualizadas.")
+                        else:
+                            print("No se seleccionaron armas.")
+
+                    elif sub_opcion == "4":
+                        planeta_nuevo = self.seleccionar_planeta()
+                        if planeta_nuevo:
+                            mision_seleccionada.planeta = planeta_nuevo
+                            print("Planeta actualizado.")
+                        else:
+                            print("No se seleccionó ningún planeta.")
+
+                    elif sub_opcion == "5":
+                        print("Saliendo del menú de modificaciones...")
+                        break
+
+                    else:
+                        print("Opción inválida. Intenta de nuevo.")
+            
+            elif opcion.lower() == "salir":
+                print("Saliendo del menú de modificaciones...")
+                break
+            else:
+                print("Opción inválida. Intenta de nuevo.")
+
+    def guardar_misiones(self):
+        with open("misiones.txt", "w") as f:
+            for mision in self.mision_lista:
+                f.write(f"{mision.nombre},{mision.planeta},{mision.nave},{','.join(mision.personajes)},{','.join(mision.armas)}\n")
+        print("Misiones guardadas exitosamente.")
+
+
+
+    def cargar_misiones(self):
+        try:
+            with open("misiones.txt", "r") as f:
+                for line in f:
+                    nombre, planeta_nombre, nave_nombre, personajes_str, armas_str = line.strip().split(',')
+                    personajes = personajes_str.split(',')
+                    armas = armas_str.split(',')
+                    
+                    # Aquí debes encontrar el objeto planeta y nave por su nombre
+                    planeta = next((p for p in self.planeta_lista if p.nombre == planeta_nombre), None)
+                    nave = next((n for n in self.naves if n.nombre == nave_nombre), None)
+                    
+                    if planeta and nave:
+                        mision = Mision(nombre, planeta, nave, personajes, armas)
+                        self.mision_lista.append(mision)
+                    else:
+                        print(f"Error al cargar la misión '{nombre}': planeta o nave no encontrados.")
+            print("Misiones cargadas exitosamente.")
+        except FileNotFoundError:
+            print("El archivo de misiones no se encontró.")
