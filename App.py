@@ -846,5 +846,6 @@ class APP:
             print("Elige la misma cantidad de armas que de personajes escogigos\n")   
         nueva_mision = Mision(nombre, planeta_1, nave_1, personajes, armas)    
         self.mision_lista.append(nueva_mision)
-        with open("misiones.txt", "a") as m:
-            m.write(self.mi)
+        ##Creo que esto fue lo que Andrés me pidió que eliminara (no quise hacerlo por si las moscas)
+        """with open("misiones.txt", "a") as m:
+            m.write(self.mi)"""
