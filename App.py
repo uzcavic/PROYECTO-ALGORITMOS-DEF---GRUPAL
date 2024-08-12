@@ -36,7 +36,8 @@ class APP:
             self.CSV_Crear_nave()
             self.CSV_Crear_planetas()
             self.crear_arma()
-            for arma in self.arma_lista:
+            self.crear_personaje()
+            """for arma in self.arma_lista:
                 arma.showArmas()
             self.crear_pelicula() 
             self.crear_especies() 
@@ -58,7 +59,7 @@ class APP:
                 vehiculo.showVehiculo()
             self.relacionar_vehiculos_y_naves_con_personajes()
             for personaje in self.personaje_lista:
-                personaje.showPersonaje()
+                personaje.showPersonaje()"""
             self.mostrar_menu()
 
 
@@ -119,6 +120,8 @@ class APP:
                 elif opcion == "6":
                     self.Estadistica_nave()
                 elif opcion =="7":
+                    self.crear_mision()
+                elif opcion == "8":    
 
                     print("""Gracias y que la fuerza te acompañe
                         
@@ -764,7 +767,7 @@ class APP:
         print("indiqueme el destino al que quiere ir")
         index=1
         lis_planeta=[]
-        for planeta in self.planeta_lista:
+        for planeta in self.CSV_planeta_lista:
             planeta:Planeta
             lis_planeta.append(planeta.nombre)
             print(f"{index}-{planeta.nombre}")
@@ -772,11 +775,13 @@ class APP:
             index+=1
         elccion = int(input("--> "))
         planeta_1 = lis_planeta[elccion-1]
+
+        nombre = "batalla de "+ planeta_1
 #poner while
         print("indiqueme la nave que quiere usar")
         lis_nave=[]
         index=1
-        for nave in self.nave_lista:
+        for nave in self.CSV_nave_lista:
             nave:Nave
             lis_nave.append(nave.nombre)
             print(f"{index}-{nave.nombre}")
@@ -813,7 +818,7 @@ class APP:
                     print("opcion invalida")
         armas=[]
         lis_arma=[]
-        while len(armas)!=len(personajes):
+        while not len(armas)==len(personajes):
             print("indiqueme el personaje que quiere usar ")
             index=1
             for arma in self.arma_lista:
@@ -823,7 +828,7 @@ class APP:
                 index+=1
             elccion = int(input("--> "))
             arm = lis_arma[elccion-1]
-            personajes.append(arm)
-            print("Elige la misma cantidad de armas que de personajes escogigos\n")
-        nueva_mision = Mision("A", planeta_1, nave_1, personajes, armas)    
+            armas.append(arm)
+            print("Elige la misma cantidad de armas que de personajes escogigos\n")   
+        nueva_mision = Mision(nombre, planeta_1, nave_1, personajes, armas)    
         self.mision_lista.append(nueva_mision)
