@@ -126,7 +126,8 @@ class APP:
                         1. Crear Misión
                         2. Modificar Misión
                         3. Visualizar Misiones
-                        4. Volver al menú principal""")
+                        4. Guardar Misiones      
+                        5. Volver al menú principal""")
                         opcion_mision = input("---> ").strip()
 
                         if opcion_mision == "1":
@@ -136,6 +137,8 @@ class APP:
                         elif opcion_mision == "3":
                             self.visualizar_misiones()  # Llama al método para visualizar las misiones
                         elif opcion_mision == "4":
+                            self.guardar_misiones()    
+                        elif opcion_mision == "5":
                             print("Volviendo al menú principal...")
                             break  # Sale del bucle y vuelve al menú principal
                         else:
