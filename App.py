@@ -6,6 +6,7 @@ from Planeta import Planeta
 from Nave import Nave, Vehiculo
 import matplotlib.pyplot as plt #para instalar esta libreria se habre una nueva terminal, aparece en los tres puntos de arriba, ya abierto colocar "pip install matplotlib" y listo 
 import statistics
+import pandas as pd
 from statistics import mean, multimode
 
 class APP:
@@ -567,4 +568,6 @@ class APP:
                 persona.naves.append("Este personaje no maneja ninguna nave")
             persona.naves = ", ".join(persona.naves)    
 
+    def crear_arma(self):
+    
 #Aquí va el menú de las misiones
