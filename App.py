@@ -16,7 +16,8 @@ class APP:
     pelicula_lista = []
     personaje_lista = []
     planeta_lista = []
-    nave_lista = []
+    CSV_planeta_lista = []
+    CSV_nave_lista = []
     vehiculos_lista = []
     arma_lista = [] 
     personaje_especie = {}
@@ -128,8 +129,7 @@ class APP:
     def grafica_planetas(self):            
             nombre=[]
             poblacion=[]
-            print(self.planeta_lista)
-            for planeta in self.planeta_lista:
+            for planeta in self.CSV_planeta_lista:
                 planeta:Planeta
                 if planeta.habitantes == "unknown":
                     nombre.append(planeta.nombre)
@@ -152,7 +152,7 @@ class APP:
         mglt=[]
         nombres=[]
         longtudes=[]
-        for nave in self.nave_lista:
+        for nave in self.CSV_nave_lista:
             datos =[]
             
             nave:Nave
@@ -247,7 +247,7 @@ class APP:
         costos=[]
         pro_costo=0
         a=0
-        for nave in self.nave_lista:
+        for nave in self.CSV_nave_lista:
             nave:Nave
             if nave.vel_max == "unknown" or nave.vel_max=="n/a":
                 a+=1    
@@ -483,6 +483,20 @@ class APP:
             else:
                 continue
 
+    def CSV_Crear_nave(self):
+        archivo_nave = pd.read_csv("starships.csv") #se hace así
+    
+        for i in range(len(archivo_nave)):
+            nombre = archivo_nave.iloc[i][1]
+            longitud = archivo_nave.iloc[i][5]
+            capacidad_carga = archivo_nave.iloc[i][9]
+            clasificacion_hiperimpulsor = archivo_nave.iloc[i][11]
+            mgl = archivo_nave.iloc[i][12]
+            vel_max = archivo_nave.iloc[i][6]
+            costo = archivo_nave.iloc[i][4]
+            nueva_nave = Nave(nombre, longitud, capacidad_carga, clasificacion_hiperimpulsor, mgl,vel_max,costo)
+            self.CSV_nave_lista.append(nueva_nave)        
+
     def crear_vehiculos(self):
         for vehiculo_id in range(1, 40):
             vehiculo_id = str(vehiculo_id)
@@ -553,6 +567,17 @@ class APP:
 
                     nuevo_planeta = Planeta(uid, name, periodo_orbita, periodo_rotacion, habitantes, clima, lista_planeta_en_episodio, lista_personajes_en_planeta)
                     self.planeta_lista.append(nuevo_planeta)
+
+    def CSV_Crear_planetas(self): 
+        archivo_planeta = pd.read_csv("planets.csv") #se hace así
+        for i in range(len(archivo_planeta)):
+            nombre = archivo_planeta.iloc[i][1]
+            periodo_orbita = archivo_planeta.iloc[i][4]
+            periodo_rotacion = archivo_planeta.iloc[i][3]
+            habitantes = archivo_planeta.iloc[i][6]
+            clima = archivo_planeta.iloc[i][8]
+            nuevo_planeta = Planeta(nombre, periodo_orbita, periodo_rotacion, habitantes, clima)
+            self.CSV_planeta_lista.append(nuevo_planeta)
 
     def relacionar_personajes_con_planetas(self):
         for planeta in self.planeta_lista: #recorro la lista de planetas

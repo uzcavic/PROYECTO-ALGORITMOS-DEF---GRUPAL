@@ -1,5 +1,5 @@
 class Planeta:
-    def __init__(self, uid, nombre, periodo_orbita, periodo_rotacion, habitantes, clima, lista_episodios, lista_personajes):
+    def __init__(self, uid, nombre, periodo_orbita, periodo_rotacion, habitantes, clima, lista_episodios="ninguno", lista_personajes="ninguno"):
         self.uid = uid
         self.nombre = nombre
         self.periodo_orbita = periodo_orbita
