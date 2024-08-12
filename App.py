@@ -20,6 +20,7 @@ class APP:
     CSV_nave_lista = []
     vehiculos_lista = []
     arma_lista = [] 
+    misiones_usuario_lista = []
     personaje_especie = {}
     personaje_nave = {} 
     personaje_planeta = {}    
@@ -61,19 +62,21 @@ class APP:
             while True: #registrar usuario primero 
 
                 print("""Bienvenido viajero, indique qué desea saber del universo de Star Wars
-        1. Registrar usuario
-        2. Ver lista de peliculas
-        3. Ver lista de especies
-        4. Ver lista de planetas
-        5. Buscar personaje
-        6. Gráficos de la población de los planetas
-        7. Gráficos diferenciadores de las naves
-        8. Estadísticas básicas sobre valores de la nave
-        9. Menú de misiones                    
-        10. Terminar el programa""")
+                        1. Registrar usuario
+                        2. Ver lista de peliculas
+                        3. Ver lista de especies
+                        4. Ver lista de planetas
+                        5. Buscar personaje
+                        6. Gráficos de la población de los planetas
+                        7. Gráficos diferenciadores de las naves
+                        8. Estadísticas básicas sobre valores de la nave
+                        9. Menú de misiones                    
+                        10. Terminar el programa""")
                 opcion = input("---> ")
                 if opcion == "1":
                     nombre = input("Ingrese su nombre: ")
+                    uid= input("Ingrese su ID: ")
+
 
                 elif opcion =="2":
                     contador=1
