@@ -958,3 +958,25 @@ class APP:
             print("Misiones cargadas exitosamente.")
         except FileNotFoundError:
             print("El archivo de misiones no se encontró.")
+
+    def visualizar_misiones(self):
+        if not self.mision_lista:
+            print("No tienes misiones creadas.")
+            return
+
+        print("Tus misiones:")
+        for i, mision in enumerate(self.mision_lista):
+            print(f"{i + 1}. {mision.nombre}")
+
+        opcion = input("Selecciona el número de la misión para ver detalles o 'salir' para volver: ")
+        if opcion.isdigit() and 1 <= int(opcion) <= len(self.mision_lista):
+            mision = self.mision_lista[int(opcion) - 1]
+            print(f"Detalles de la misión '{mision.nombre}':")
+            print(f"Planeta: {mision.planeta.nombre}")
+            print(f"Nave: {mision.nave.nombre}")
+            print(f"Personajes: {', '.join([p.nombre for p in mision.personajes])}")
+            print(f"Armas: {', '.join(mision.armas)}")
+        elif opcion.lower() == "salir":
+            print("Volviendo al menú de misiones...")
+        else:
+            print("Opción inválida.")        
