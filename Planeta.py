@@ -1,6 +1,3 @@
-#from matplotlib.pylab import f
-
-
 class Planeta:
     def __init__(self, uid, nombre, periodo_orbita, periodo_rotacion, habitantes, clima, lista_episodios, lista_personajes):
         self.uid = uid

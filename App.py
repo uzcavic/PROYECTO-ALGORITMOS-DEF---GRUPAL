@@ -1,4 +1,5 @@
 import requests
+from Usuario import Usuario
 from Armas import Armas
 from Pelicula import Pelicula
 from Especie import Especie
@@ -49,51 +50,58 @@ class APP:
             self.relacionar_vehiculos_y_naves_con_personajes()
             '''for personaje in self.personaje_lista:
                 personaje.showPersonaje()'''
+            self.mostrar_menu()
+
             
 
 
             while True: #registrar usuario primero 
+
                 print("""Bienvenido viajero, indique qué desea saber del universo de Star Wars
-        1. Ver lista de peliculas
-        2. Ver lista de especies
-        3. Ver lista de planetas
-        4. Buscar personaje
-        5. Gráficos de la población de los planetas
-        6. Gráficos diferenciadores de las naves
-        7. Estadísticas básicas sobre valores de la nave
-        8. Menú de misiones                    
-        9. Terminar el programa""")
+        1. Registrar usuario
+        2. Ver lista de peliculas
+        3. Ver lista de especies
+        4. Ver lista de planetas
+        5. Buscar personaje
+        6. Gráficos de la población de los planetas
+        7. Gráficos diferenciadores de las naves
+        8. Estadísticas básicas sobre valores de la nave
+        9. Menú de misiones                    
+        10. Terminar el programa""")
                 opcion = input("---> ")
-                if opcion =="1":
+                if opcion == "1":
+                    nombre = input("Ingrese su nombre: ")
+
+                elif opcion =="2":
                     contador=1
                     for pelicula in self.pelicula_lista:
                         pelicula:Pelicula
                         print(f"Pelicula N°{contador}\n")
                         pelicula.showPelicula()
                         contador+=1 
-                elif opcion =="2":
+                elif opcion =="3":
                     contador=1
                     for especie in self.especie_lista:
                         especie:Especie
                         print(f"Especie N°{contador}\n")
                         especie.showEspecie()
                         contador+=1
-                elif opcion =="3":
+                elif opcion =="4":
                     contador=1
                     for planeta in self.planeta_lista:
                         planeta:Planeta
                         print(f"Planeta N°{contador}\n")
                         planeta.showPlaneta()
                         contador+=1 
-                elif opcion =="4":
+                elif opcion =="5":
                     for personaje in self.personaje_lista:
                         personaje:Personaje
                         personaje.showPersonaje()                         
-                elif opcion =="5":
-                    self.grafica_planetas()
                 elif opcion =="6":
-                    self.Grafica_nave()  
+                    self.grafica_planetas()
                 elif opcion =="7":
+                    self.Grafica_nave()  
+                elif opcion =="8":
                     self.Estadistica_nave()    
                 elif opcion =="9":
                     print("""Gracias y que la fuerza te acompañe
@@ -587,8 +595,9 @@ class APP:
 
 #Aquí va el menú de las misiones
 #Menú para el personaje
-print("¡Hola viajero! aquí vas a poder escoger tus misiones")
+
 def mostrar_menu():
+    print("¡Hola viajero! aquí vas a poder escoger tus misiones")
     print("Menú de selección de personajes:")
     for personaje in enumerate(personaje):
         i=1
@@ -602,7 +611,7 @@ def seleccionar_personajes():
         mostrar_menu()
         opcion_pe=input("Ingresa el número del personaje que deseas seleccionar (7 max) o 'salir' para terminar: ")
         
-        if opcion_pe=="8": ######################################################################
+        if opcion_pe=="8": 
             print("Saliendo del menú...")
             break
         if opcion_pe.isdigit():
@@ -635,6 +644,7 @@ def mostrar_menu():
         print(f"{i}.- {planeta.nombre}")
         i+=1
     print("99.- Salir")
+
 def seleccionar_planeta():
     planeta_seleccionado=None
     while True:
