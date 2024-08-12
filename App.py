@@ -1,4 +1,5 @@
 import requests
+from Armas import Armas
 from Pelicula import Pelicula
 from Especie import Especie
 from Personaje import Personaje
@@ -22,7 +23,7 @@ class APP:
     
     
     def start(self):
-            
+            self.crear_arma()
             print('Cargando datos...')
             self.crear_pelicula() 
             self.crear_especies() 
@@ -48,7 +49,7 @@ class APP:
             
 
 
-            while True:
+            while True: #registrar usuario primero 
                 print("""Bienvenido viajero, indique qué desea saber del universo de Star Wars
         1. Ver lista de peliculas
         2. Ver lista de especies
@@ -569,5 +570,16 @@ class APP:
             persona.naves = ", ".join(persona.naves)    
 
     def crear_arma(self):
+        archivo_armas = pd.read_csv("weapons.csv") #se hace así
     
+        for i in range(len(archivo_armas)):
+            modelo = archivo_armas.iloc[i][0]
+            tipo = archivo_armas.iloc[i][1]
+            descripcion = archivo_armas.iloc[i][2]
+            armas:Armas
+            nueva_arma = Armas(modelo, tipo, descripcion)
+            self.arma_lista.append(nueva_arma)
+            armas.showArma()
+
+
 #Aquí va el menú de las misiones
