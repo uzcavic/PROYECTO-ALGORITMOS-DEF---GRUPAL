@@ -572,7 +572,7 @@ class APP:
             vel_max = archivo_nave.iloc[i, 6]
             costo = archivo_nave.iloc[i, 4]
             nueva_nave = Nave(nombre, longitud, capacidad_carga, 0, 0, 0, clasificacion_hiperimpulsor, mgl, vel_max, costo)
-            self.CSV_nave_lista.append(nueva_nave)       #ARREGLAR, FALTAN ARGUMENTOS
+            self.CSV_nave_lista.append(nueva_nave)       
 
     def crear_vehiculos(self):
         for vehiculo_id in range(1, 40):
@@ -707,7 +707,7 @@ class APP:
         while True:
             print('Menú de selección de armas:')
             print("Menú de selección de armas:")
-            for i, arma in enumerate(self.armas):
+            for i, arma in enumerate(self.arma_lista):
                 print(f"{i + 1}. {arma.nombre}")
             print("8. Salir")
             
@@ -717,10 +717,10 @@ class APP:
                 break
             if opcion.isdigit():
                 indice = int(opcion) - 1
-                if 0 <= indice < len(self.armas):
-                    if self.armas[indice] not in armas_seleccionadas:
-                        armas_seleccionadas.append(self.armas[indice])
-                        print(f"Has seleccionado el arma {self.armas[indice].nombre}.")
+                if 0 <= indice < len(self.arma_lista):
+                    if self.arma_lista[indice] not in armas_seleccionadas:
+                        armas_seleccionadas.append(self.arma_lista[indice])
+                        print(f"Has seleccionado el arma {self.arma_lista[indice].nombre}.")
                     else:
                         print("Esta arma ya ha sido seleccionada. Elige otra.")
                 else:
@@ -738,24 +738,24 @@ class APP:
     def mostrar_menu_personajes(self):
         print("¡Hola viajero! aquí vas a poder escoger tus misiones")
         print("Menú de selección de personajes:")
-        for i, personaje in enumerate(self.personajes):
+        for i, personaje in enumerate(self.personaje_lista):
             print(f"{i + 1}. {personaje.nombre}")
-        print(f"{len(self.personajes) + 1}. Salir")
+        print(f"{len(self.personaje_lista) + 1}. Salir")
 
     def seleccionar_personajes(self):
         personajes_seleccionados = []
         while True:
             self.mostrar_menu_personajes()
             opcion_pe = input("Ingresa el número del personaje que deseas seleccionar (7 max) o 'salir' para terminar: ")
-            if opcion_pe == str(len(self.personajes) + 1):
+            if opcion_pe == str(len(self.personaje_lista) + 1):
                 print("Saliendo del menú...")
                 break
             if opcion_pe.isdigit():
                 indice = int(opcion_pe) - 1
-                if 0 <= indice < len(self.personajes):
-                    if self.personajes[indice] not in personajes_seleccionados:
-                        personajes_seleccionados.append(self.personajes[indice])
-                        print(f"Has seleccionado al personaje {self.personajes[indice].nombre}.")
+                if 0 <= indice < len(self.personaje_lista):
+                    if self.personaje_lista[indice] not in personajes_seleccionados:
+                        personajes_seleccionados.append(self.personaje_lista[indice])
+                        print(f"Has seleccionado al personaje {self.personaje_lista[indice].nombre}.")
                     else:
                         print("Este personaje ya ha sido seleccionado. Elige otro.")
                 else:
@@ -803,7 +803,7 @@ class APP:
 
     def mostrar_menu_naves(self):
         print("Aquí podrás seleccionar el nombre de la nave en la que quieres viajar:")
-        for i, nave in enumerate(self.naves):
+        for i, nave in enumerate(self.nave_lista):
             print(f"{i + 1}.- {nave.nombre}")
         print("99.- Salir")
 
@@ -816,8 +816,8 @@ class APP:
                 return None  # Salir y devolver None
             if opcion_n.isdigit():
                 indice = int(opcion_n) - 1
-                if 0 <= indice < len(self.naves):
-                    nave_seleccionada = self.naves[indice]
+                if 0 <= indice < len(self.nave_lista):
+                    nave_seleccionada = self.nave_lista[indice]
                     print(f"Has seleccionado la nave {nave_seleccionada.nombre}")
                     return nave_seleccionada  # Devolver la nave seleccionada
                 else:
@@ -944,10 +944,10 @@ class APP:
                     
                     # Aquí debes encontrar el objeto planeta y nave por su nombre
                     planeta = next((p for p in self.planeta_lista if p.nombre == planeta_nombre), None)
-                    nave = next((n for n in self.naves if n.nombre == nave_nombre), None)
+                    nave = next((n for n in self.nave_lista if n.nombre == nave_nombre), None)
                     
                     if planeta and nave:
-                        mision = Mision(nombre, planeta, nave, personajes, armas)
+                        mision = Mision(nombre, planeta, nave, armas, personajes)
                         self.mision_lista.append(mision)
                     else:
                         print(f"Error al cargar la misión '{nombre}': planeta o nave no encontrados.")
