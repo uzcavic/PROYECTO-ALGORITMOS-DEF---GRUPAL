@@ -1,5 +1,6 @@
-from tkinter import N
+
 import requests
+from Mision import Mision
 from Usuario import Usuario
 from Armas import Armas
 from Pelicula import Pelicula
@@ -8,7 +9,6 @@ from Personaje import Personaje
 from Planeta import Planeta
 from Nave import Nave, Vehiculo
 import matplotlib.pyplot as plt #para instalar esta libreria se habre una nueva terminal, aparece en los tres puntos de arriba, ya abierto colocar "pip install matplotlib" y listo 
-import statistics
 import pandas as pd
 from statistics import mean, multimode
 
@@ -22,6 +22,7 @@ class APP:
     vehiculos_lista = []
     arma_lista = []
     usuario_lista = []
+    mision_lista=[]
     personaje_especie = {}
     personaje_nave = {} 
     personaje_planeta = {} 
@@ -34,7 +35,7 @@ class APP:
             print('Espere un momento, por favor')
             self.CSV_Crear_nave()
             self.CSV_Crear_planetas()
-            '''self.crear_arma()
+            self.crear_arma()
             for arma in self.arma_lista:
                 arma.showArmas()
             self.crear_pelicula() 
@@ -57,7 +58,7 @@ class APP:
                 vehiculo.showVehiculo()
             self.relacionar_vehiculos_y_naves_con_personajes()
             for personaje in self.personaje_lista:
-                personaje.showPersonaje()'''
+                personaje.showPersonaje()
             self.mostrar_menu()
 
 
@@ -124,7 +125,7 @@ class APP:
     ⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⠀⢀⣤⣤⣤⣤⣤⣤⣤⠀⠀⠀⠀⢠⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣀⠀⠀⠀⠀⠀⠀
     ⠀⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⣼⣿⣿⣿⣿⣿⣿⣿⣇⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡀⠀⠀⠀⠀
     ⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣟⠛⠛⠛⠛⠛⣿⣿⣿⣿⡟⠛⠛⠛⠛⠛⢠⣿⣿⣿⣿⠿⣿⣿⣿⣿⡀⠀⠀⢸⣿⣿⣿⣿⡏⠉⠉⢉⣿⣿⣿⣿⡇⠀⠀⠀⠀
-    ⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿⣿⣿⣷⡀⠀⠀⠀⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⣾⣿⣿⣿⡟⠀⢻⣿⣿⣿⣧⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠀⠀⠀⠀⠀
+    ⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿⣿⣿⣷⡀⠀⠀⠀ ⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⣾⣿⣿⣿⡟⠀⢻⣿⣿⣿⣧⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠀⠀⠀⠀⠀
     ⣤⣤⣤⣤⣤⣤⣤⣤⣤⣬⣿⣿⣿⣿⣿⣷⠀⠀⠀⣿⣿⣿⣿⡇⠀⠀⠀⠀⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⣤⣤⣤⣤⣤⣤
     ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏⠀⠀⠀⣿⣿⣿⣿⡇⠀⠀⠀⢀⣿⣿⣿⣿⡿⠿⠿⠿⠿⣿⣿⣿⣿⡀⢸⣿⣿⣿⣿⡇⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
     ⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠟⠛⠁⠀⠀⠀⠀⠿⠿⠿⠿⠇⠀⠀⠀⠸⠿⠿⠿⠟⠀⠀⠀⠀⠀⠻⠿⠿⠿⠇⠸⠿⠿⠿⠿⠇⠀⠀⠙⠛⠿⠿⠿⠿⠿⠿⠿⠿
@@ -773,15 +774,18 @@ class APP:
         planeta_1 = lis_planeta[elccion-1]
 #poner while
         print("indiqueme la nave que quiere usar")
+        lis_nave=[]
         index=1
         for nave in self.nave_lista:
             nave:Nave
+            lis_nave.append(nave.nombre)
             print(f"{index}-{nave.nombre}")
             index+=1
         elccion = int(input("--> "))
-        nave_1 = self.nave_lista[elccion-1]
+        nave_1 = lis_nave[elccion-1]
 
         personajes=[]
+        lis_persona=[]
         elige=True
         while len(personajes)<7 and elige==True:
             print("indiqueme el personaje que quiere usar ")
@@ -789,9 +793,10 @@ class APP:
             for personaje in self.personaje_lista:
                 personaje:Personaje
                 print(f"{index}-{personaje.nombre}")
+                lis_persona.append(personaje.nombre)
                 index+=1
             elccion = int(input("--> "))
-            personaje = self.personaje_lista[elccion-1]
+            personaje = lis_persona[elccion-1]
             personajes.append(personaje)
             
             while True:
@@ -807,14 +812,18 @@ class APP:
                 else:
                     print("opcion invalida")
         armas=[]
+        lis_arma=[]
         while len(armas)!=len(personajes):
             print("indiqueme el personaje que quiere usar ")
             index=1
             for arma in self.arma_lista:
                 arma:Armas
                 print(f"{index}-{arma.nombre}")
+                lis_arma.append(arma.nombre)
                 index+=1
             elccion = int(input("--> "))
-            arm = self.arma_lista[elccion-1]
+            arm = lis_arma[elccion-1]
             personajes.append(arm)
             print("Elige la misma cantidad de armas que de personajes escogigos\n")
+        nueva_mision = Mision("A", planeta_1, nave_1, personajes, armas)    
+        self.mision_lista.append(nueva_mision)
