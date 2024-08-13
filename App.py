@@ -20,7 +20,7 @@ class APP:
     planeta_lista = []
     nave_lista = []
     vehiculos_lista = []
-    arma_lista = []
+    csv_arma_lista = []
     usuario_lista = []
     mision_lista=[]
     personaje_especie = {}
@@ -36,9 +36,9 @@ class APP:
             print('Espere un momento, por favor')
             self.CSV_Crear_nave()
             self.CSV_Crear_planetas()
-            self.crear_arma()
+            self.CSV_crear_arma()
             self.CSV_crear_personaje()
-            '''for arma in self.arma_lista:
+            '''for arma in self.csv_arma_lista:
                 arma.showArmas()'''
             self.crear_pelicula() 
             self.crear_especies() 
@@ -522,7 +522,7 @@ class APP:
                 continue
     
     def CSV_crear_personaje(self):
-        archivo_personaje = pd.read_csv("characters.csv") #se hace así
+        archivo_personaje = pd.read_csv("characters.csv") 
     
         for i in range(len(archivo_personaje)):
             nombre = archivo_personaje.iloc[i, 1]
@@ -564,7 +564,7 @@ class APP:
                 continue
 
     def CSV_Crear_nave(self):
-        archivo_nave = pd.read_csv("starships.csv") #se hace así
+        archivo_nave = pd.read_csv("starships.csv") 
     
         for i in range(len(archivo_nave)):
             nombre = archivo_nave.iloc[i, 1]
@@ -685,7 +685,7 @@ class APP:
                 persona.naves.append("Este personaje no maneja ninguna nave")
             persona.naves = ", ".join(persona.naves)    
 
-    def crear_arma(self):
+    def CSV_crear_arma(self):
         archivo_armas = pd.read_csv("weapons.csv") #se hace así
     
         for i in range(len(archivo_armas)):
@@ -696,21 +696,19 @@ class APP:
             descripcion = archivo_armas.iloc[i, 7]
 
             nueva_arma = Armas(uid, nombre, modelo, tipo, descripcion)
-            self.arma_lista.append(nueva_arma)
+            self.csv_arma_lista.append(nueva_arma)
 
 #Aquí va el menú de las misiones
 #Menú para el personaje
 
 
 
-
-
     def seleccionar_armas(self, num_armas):
         armas_seleccionadas = []
         while True:
-            print('Menú de selección de armas:')
+
             print("Menú de selección de armas:")
-            for i, arma in enumerate(self.arma_lista):
+            for i, arma in enumerate(self.csv_arma_lista):
                 print(f"{i + 1}. {arma.nombre}")
             print("8. Salir")
             
@@ -720,10 +718,10 @@ class APP:
                 break
             if opcion.isdigit():
                 indice = int(opcion) - 1
-                if 0 <= indice < len(self.arma_lista):
-                    if self.arma_lista[indice] not in armas_seleccionadas:
-                        armas_seleccionadas.append(self.arma_lista[indice])
-                        print(f"Has seleccionado el arma {self.arma_lista[indice].nombre}.")
+                if 0 <= indice < len(self.csv_arma_lista):
+                    if self.csv_arma_lista[indice] not in armas_seleccionadas:
+                        armas_seleccionadas.append(self.csv_arma_lista[indice])
+                        print(f"Has seleccionado el arma {self.csv_arma_lista[indice].nombre}.")
                     else:
                         print("Esta arma ya ha sido seleccionada. Elige otra.")
                 else:
@@ -741,43 +739,46 @@ class APP:
     def mostrar_menu_personajes(self):
         print("¡Hola viajero! aquí vas a poder escoger tus misiones")
         print("Menú de selección de personajes:")
-        for i, personaje in enumerate(self.personaje_lista):
+        for i, personaje in enumerate(self.CSV_personaje_lista):
             print(f"{i + 1}. {personaje.nombre}")
-        print(f"{len(self.personaje_lista) + 1}. Salir")
+        print(f"{len(self.CSV_personaje_lista) + 1}. Salir")
 
-    def seleccionar_personajes(self):
+    def seleccionar_personajes(self, num_personajes):
+        # Llama a CSV_crear_personaje para cargar personajes desde el CSV
+        self.CSV_crear_personaje()  #personajes del csv_persona_lista
         personajes_seleccionados = []
         while True:
-            self.mostrar_menu_personajes()
-            opcion_pe = input("Ingresa el número del personaje que deseas seleccionar (7 max) o 'salir' para terminar: ")
-            if opcion_pe == str(len(self.personaje_lista) + 1):
-                print("Saliendo del menú...")
+            print('Menú de selección de personajes:')
+            for i, personaje in enumerate(self.CSV_personaje_lista):
+                print(f"{i + 1}. {personaje.nombre}")
+            print("8. Salir")
+            
+            opcion = input("Ingresa el número del personaje que deseas seleccionar (1-8) o '0' para terminar: ")
+            if opcion == "0":
+                print("Saliendo del menú de personajes...")
                 break
-            if opcion_pe.isdigit():
-                indice = int(opcion_pe) - 1
-                if 0 <= indice < len(self.personaje_lista):
-                    if self.personaje_lista[indice] not in personajes_seleccionados:
-                        personajes_seleccionados.append(self.personaje_lista[indice])
-                        print(f"Has seleccionado al personaje {self.personaje_lista[indice].nombre}.")
+            if opcion.isdigit():
+                indice = int(opcion) - 1
+                if 0 <= indice < len(self.CSV_personaje_lista):
+                    if self.CSV_personaje_lista[indice] not in personajes_seleccionados:
+                        personajes_seleccionados.append(self.CSV_personaje_lista[indice])
+                        print(f"Has seleccionado al personaje {self.CSV_personaje_lista[indice].nombre}.")
                     else:
                         print("Este personaje ya ha sido seleccionado. Elige otro.")
                 else:
                     print("Opción inválida. Intenta de nuevo.")
             else:
                 print("Opción inválida. Intenta de nuevo.")
-            if len(personajes_seleccionados) >= 7:
-                print("Has alcanzado el límite de selección de personajes.")
+
+            if len(personajes_seleccionados) >= num_personajes:
+                print(f"Has seleccionado el número requerido de personajes: {num_personajes}.")
                 break
 
-        if personajes_seleccionados:
-            nombres_seleccionados = ", ".join([personaje.nombre for personaje in personajes_seleccionados])
-            print(f"Perfecto, has elegido a {nombres_seleccionados}.")
-        else:
-            print("No has seleccionado ningún personaje.")
+        return personajes_seleccionados
 
     def mostrar_menu_planetas(self):
         print("Aquí podrás seleccionar el nombre del planeta para tu batalla:")
-        for i, planeta in enumerate(self.planeta_lista):
+        for i, planeta in enumerate(self.CSV_planeta_lista):
             print(f"{i + 1}.- {planeta.nombre}")
         print("99.- Salir")
 
@@ -790,8 +791,8 @@ class APP:
                 return None  # Salir y devolver None
             if opcion_p.isdigit():
                 indice = int(opcion_p) - 1
-                if 0 <= indice < len(self.planeta_lista):
-                    planeta_seleccionado = self.planeta_lista[indice]
+                if 0 <= indice < len(self.CSV_planeta_lista):
+                    planeta_seleccionado = self.CSV_planeta_lista[indice]
                     print(f"\nHas seleccionado el planeta {planeta_seleccionado.nombre}")
                     return planeta_seleccionado  # Devolver el planeta seleccionado
                 else:
@@ -806,11 +807,12 @@ class APP:
 
     def mostrar_menu_naves(self):
         print("Aquí podrás seleccionar el nombre de la nave en la que quieres viajar:")
-        for i, nave in enumerate(self.nave_lista):
+        for i, nave in enumerate(self.CSV_nave_lista):
             print(f"{i + 1}.- {nave.nombre}")
         print("99.- Salir")
 
     def seleccionar_nave(self):
+        self.CSV_Crear_nave()
         while True:
             self.mostrar_menu_naves()
             opcion_n = input("Ingresa aquí el número de la nave al que quieres viajar, o introduce 99 para salir: ")
@@ -819,8 +821,8 @@ class APP:
                 return None  # Salir y devolver None
             if opcion_n.isdigit():
                 indice = int(opcion_n) - 1
-                if 0 <= indice < len(self.nave_lista):
-                    nave_seleccionada = self.nave_lista[indice]
+                if 0 <= indice < len(self.CSV_nave_lista):
+                    nave_seleccionada = self.CSV_nave_lista[indice]
                     print(f"Has seleccionado la nave {nave_seleccionada.nombre}")
                     return nave_seleccionada  # Devolver la nave seleccionada
                 else:
@@ -979,4 +981,4 @@ class APP:
         elif opcion.lower() == "salir":
             print("Volviendo al menú de misiones...")
         else:
-            print("Opción inválida.")        
+            print("Opción inválida.")       
