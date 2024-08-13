@@ -38,6 +38,7 @@ class APP:
         
             self.CSV_Crear_planetas()
             self.CSV_crear_arma()
+            self.CSV_Crear_nave()
             self.crear_pelicula() 
             self.crear_especies() 
             self.crear_planeta() 
@@ -56,10 +57,13 @@ class APP:
             while True:
                 print("Bienvenido a la galaxia de Star Wars! Necesitamos saber si eres un usuario registrado y si no regístese por favor.")
                 uid = input("Ingrese su ID: ").strip()
-                if uid in self.usuario_lista:
+                usuario_encontrado = next((u for u in self.usuario_lista if u.uid == uid), None)
+
+                if usuario_encontrado:
                     print("Este ID ya está registrado.")
                     continuar = input("¿Desea continuar al menú? (si/no): ").strip().lower()
                     if continuar == 'si':
+                        usuario = usuario_encontrado  # Asignar el usuario encontrado
                         break  
                     else:
                         print("Por favor, ingrese otro ID.")
@@ -67,6 +71,7 @@ class APP:
                     nombre = input("Ingrese su nombre: ").strip()
                     nuevo_usuario = Usuario(uid, nombre, [])
                     self.usuario_lista.append(nuevo_usuario)  # Agregar el ID a la lista de usuarios
+                    usuario = nuevo_usuario  # Asignar el nuevo usuario
                     print(f"Usuario {nombre} registrado con éxito.")
                     break  # Salir del bucle después de registrar
 
@@ -79,11 +84,11 @@ class APP:
                         4. Gráficos de la población de los planetas
                         5. Gráficos diferenciadores de las naves
                         6. Estadísticas básicas sobre valores de la nave
-                        7. Menú de misiones (aquí puedes crear, modificar y vizualizar tus misiones)                  
+                        7. Menú de misiones (aquí puedes crear, modificar y visualizar tus misiones)                  
                         8. Salir""")
                 opcion = input("---> ").strip()
 
-                '''if opcion == "1":
+                if opcion == "1":
                     self.buscar_personaje()
                 elif opcion == "2":
                     contador = 1
@@ -98,15 +103,15 @@ class APP:
                         planeta: Planeta
                         print(f"Planeta N°{contador}\n")
                         planeta.showPlaneta()
-                        contador += 1'''
-                if opcion == "4":
+                        contador += 1
+                elif opcion == "4":
                     self.grafica_planetas()
                 elif opcion == "5":
                     self.Grafica_nave()
                 elif opcion == "6":
                     self.Estadistica_nave()
-                elif opcion =="7":
-                    self.menu_misiones()
+                elif opcion == "7":
+                    self.menu_misiones(usuario) 
 
                 elif opcion == "8":    
 
@@ -447,6 +452,7 @@ class APP:
                 self.especie_lista.append(nueva_especie)
 
     def crear_pelicula(self): 
+        print("Cargando películas...")
         url = "https://swapi.dev/api/films/"
         response = requests.get(url)
         if response.status_code == 200:
@@ -464,10 +470,9 @@ class APP:
             self.pelicula_lista.sort(key=lambda x: x.episode_id)
 
     def crear_personaje(self):
-         
+        print("Cargango personajes...")
         for id_personaje in range(1, 83):
             id_personaje = str(id_personaje)
-            print("Cargando personajes")
             url = f"https://www.swapi.tech/api/people/{id_personaje}"
             response_personaje = requests.get(url)
             if response_personaje.status_code == 200:
@@ -519,9 +524,9 @@ class APP:
             self.CSV_personaje_lista.append(nuevo_personaje)
 
     def crear_nave(self):
+        print("Cargando naves...")
         for nave_id in range(1, 37):
             nave_id = str(nave_id)
-            print("Cargando naves")
             url = f"https://www.swapi.tech/api/starships/{nave_id}"
             response_nave = requests.get(url)
             if response_nave.status_code == 200:
@@ -562,9 +567,9 @@ class APP:
             self.CSV_nave_lista.append(nueva_nave)       
 
     def crear_vehiculos(self):
+        print("Creando vehículos...")
         for vehiculo_id in range(1, 40):
             vehiculo_id = str(vehiculo_id)
-            print("Cargando vehículos")
             url = f"https://www.swapi.tech/api/vehicles/{vehiculo_id}"
             response_vehiculo = requests.get(url)
             if response_vehiculo.status_code == 200:
@@ -618,7 +623,7 @@ class APP:
                         url_episodio = f"https://www.swapi.tech/api/films/{id_episodio}"
                         response_episodio = requests.get(url_episodio)
                         if response_episodio.status_code == 200:
-                            print("Cargando episodios")
+    
                             datos_episodio = response_episodio.json()['result']['properties']
                             if url in datos_episodio['planets']:
                                 lista_planeta_en_episodio.append(datos_episodio['title'])
