@@ -89,7 +89,7 @@ class APP:
                         8. Salir""")
                 opcion = input("---> ").strip()
 
-                '''if opcion == "1":
+                if opcion == "1":
                     self.buscar_personaje()
                 elif opcion == "2":
                     contador = 1
@@ -104,8 +104,8 @@ class APP:
                         planeta: Planeta
                         print(f"Planeta N°{contador}\n")
                         planeta.showPlaneta()
-                        contador += 1'''
-                if opcion == "4":
+                        contador += 1
+                elif opcion == "4":
                     self.grafica_planetas()
                 elif opcion == "5":
                     self.Grafica_nave()
