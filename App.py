@@ -32,34 +32,19 @@ class APP:
     
     
     def start(self):
+            
             print('Cargando datos...')
-            print('Espere un momento, por favor')
+            print('Espere un momento, esto podría tardar unos minutos...')
         
             self.CSV_Crear_planetas()
             self.CSV_crear_arma()
-            '''for arma in self.csv_arma_lista:
-                arma.showArmas()'''
-            '''self.crear_pelicula() 
+            self.crear_pelicula() 
             self.crear_especies() 
             self.crear_planeta() 
-            
             self.crear_personaje() 
-
             self.relacionar_personajes_con_planetas()
-            for  planeta in self.planeta_lista:
-                planeta.showPlaneta()
-
             self.crear_nave() 
-            print("NAVES")
-            for nave in self.nave_lista:
-                nave.showNave()
-            print("Vehículos")
-            self.crear_vehiculos() 
-            for vehiculo in self.vehiculos_lista:
-                vehiculo.showVehiculo()
             self.relacionar_vehiculos_y_naves_con_personajes()
-            for personaje in self.personaje_lista:
-                personaje.showPersonaje()'''
             self.mostrar_menu()
 
 
@@ -152,7 +137,6 @@ class APP:
             if opcion == "8":
                 continue  #volvemos al inicio   
         
-
     def menu_misiones(self, usuario):
         while True:
             print("""Menú de Misiones:
@@ -176,7 +160,6 @@ class APP:
                 break  # Sale del bucle y vuelve al menú principal
             else:
                 print("Opción inválida. Intenta de nuevo.")
-
 
     def buscar_personaje(self):
         busqueda = input("Ingrese parte del nombre del personaje a buscar: ").strip().lower()
@@ -771,7 +754,6 @@ class APP:
 
         return personajes_seleccionados
 
-
     def mostrar_menu_planetas(self):
         print("Aquí podrás seleccionar el nombre del planeta para tu batalla:")
         for i, planeta in enumerate(self.CSV_planeta_lista):
@@ -935,8 +917,6 @@ class APP:
                 armas_nombres = [arma.nombre for arma in mision.armas_seleccionadas]  # Extraer los nombres de las armas
                 f.write(f"{mision.nombre},{mision.planeta_seleccionado.nombre},{mision.nave_seleccionada.nombre},{','.join(personajes_nombres)},{','.join(armas_nombres)}\n")
         print("Misiones guardadas exitosamente.")
-
-
 
     def cargar_misiones(self):
         try:
