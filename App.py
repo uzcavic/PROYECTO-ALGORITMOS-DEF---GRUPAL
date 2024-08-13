@@ -80,7 +80,8 @@ class APP:
                         print("Por favor, ingrese otro ID.")
                 else:
                     nombre = input("Ingrese su nombre: ").strip()
-                    self.usuario_lista.append(uid)  # Agregar el ID a la lista de usuarios
+                    nuevo_usuario = Usuario(uid, nombre, [])
+                    self.usuario_lista.append(nuevo_usuario)  # Agregar el ID a la lista de usuarios
                     print(f"Usuario {nombre} registrado con éxito.")
                     break  # Salir del bucle después de registrar
 
@@ -120,28 +121,8 @@ class APP:
                 elif opcion == "6":
                     self.Estadistica_nave()
                 elif opcion =="7":
-                    while True:
-                        print("""Menú de Misiones:
-                        1. Crear Misión
-                        2. Modificar Misión
-                        3. Visualizar Misiones
-                        4. Guardar Misiones      
-                        5. Volver al menú principal""")
-                        opcion_mision = input("---> ").strip()
+                    self.menu_misiones()
 
-                        if opcion_mision == "1":
-                            self.crear_mision()  # Llama al método para crear una nueva misión
-                        elif opcion_mision == "2":
-                            self.modificar_misiones()  # Llama al método para modificar misiones existentes
-                        elif opcion_mision == "3":
-                            self.visualizar_misiones()  # Llama al método para visualizar las misiones
-                        elif opcion_mision == "4":
-                            self.guardar_misiones()    
-                        elif opcion_mision == "5":
-                            print("Volviendo al menú principal...")
-                            break  # Sale del bucle y vuelve al menú principal
-                        else:
-                            print("Opción inválida. Intenta de nuevo.")
                 elif opcion == "8":    
 
                     print("""Gracias y que la fuerza te acompañe
@@ -170,8 +151,33 @@ class APP:
 
             if opcion == "8":
                 continue  #volvemos al inicio   
-    
-    
+        
+
+    def menu_misiones(self, usuario):
+        while True:
+            print("""Menú de Misiones:
+            1. Crear Misión
+            2. Modificar Misión
+            3. Visualizar Misiones
+            4. Guardar Misiones      
+            5. Volver al menú principal""")
+            opcion_mision = input("---> ").strip()
+
+            if opcion_mision == "1":
+                self.crear_mision(usuario)  # Llama al método para crear una nueva misión
+            elif opcion_mision == "2":
+                self.modificar_misiones(usuario)  # Llama al método para modificar misiones existentes
+            elif opcion_mision == "3":
+                self.visualizar_misiones(usuario)  # Llama al método para visualizar las misiones
+            elif opcion_mision == "4":
+                self.guardar_misiones(usuario)    
+            elif opcion_mision == "5":
+                print("Volviendo al menú principal...")
+                break  # Sale del bucle y vuelve al menú principal
+            else:
+                print("Opción inválida. Intenta de nuevo.")
+
+
     def buscar_personaje(self):
         busqueda = input("Ingrese parte del nombre del personaje a buscar: ").strip().lower()
         resultados = []
@@ -478,7 +484,7 @@ class APP:
          
         for id_personaje in range(1, 83):
             id_personaje = str(id_personaje)
-            print("Viendo personaje: " + str(id_personaje))
+            print("Cargando personajes")
             url = f"https://www.swapi.tech/api/people/{id_personaje}"
             response_personaje = requests.get(url)
             if response_personaje.status_code == 200:
@@ -532,7 +538,7 @@ class APP:
     def crear_nave(self):
         for nave_id in range(1, 37):
             nave_id = str(nave_id)
-            print("Viendo nave: " + str(nave_id))
+            print("Cargando naves")
             url = f"https://www.swapi.tech/api/starships/{nave_id}"
             response_nave = requests.get(url)
             if response_nave.status_code == 200:
@@ -575,7 +581,7 @@ class APP:
     def crear_vehiculos(self):
         for vehiculo_id in range(1, 40):
             vehiculo_id = str(vehiculo_id)
-            print("Viendo vehiculo: " + str(vehiculo_id))
+            print("Cargando vehículos")
             url = f"https://www.swapi.tech/api/vehicles/{vehiculo_id}"
             response_vehiculo = requests.get(url)
             if response_vehiculo.status_code == 200:
@@ -629,7 +635,7 @@ class APP:
                         url_episodio = f"https://www.swapi.tech/api/films/{id_episodio}"
                         response_episodio = requests.get(url_episodio)
                         if response_episodio.status_code == 200:
-                            print("Viendo episodio: " + str(id_episodio))
+                            print("Cargando episodios")
                             datos_episodio = response_episodio.json()['result']['properties']
                             if url in datos_episodio['planets']:
                                 lista_planeta_en_episodio.append(datos_episodio['title'])
@@ -697,28 +703,27 @@ class APP:
     def seleccionar_armas(self, num_armas):
         armas_seleccionadas = []
         while True:
-
             print("Menú de selección de armas:")
             for i, arma in enumerate(self.csv_arma_lista):
                 print(f"{i + 1}. {arma.nombre}")
             print("0. Salir")
             
-            opcion = input("Ingresa el número del arma que deseas seleccionar (1-7) o '0' para terminar: ")
+            opcion = input("Ingresa el número del arma que deseas seleccionar (1-60) o '0' para terminar: ")
             if opcion == "0":
                 print("Saliendo del menú de armas...")
                 break
             if opcion.isdigit():
                 indice = int(opcion) - 1
-                if 0 <= indice < len(self.csv_arma_lista):
+                if 0 <= indice < len(self.csv_arma_lista):  # Verifica que el índice sea válido
                     if self.csv_arma_lista[indice] not in armas_seleccionadas:
                         armas_seleccionadas.append(self.csv_arma_lista[indice])
                         print(f"Has seleccionado el arma {self.csv_arma_lista[indice].nombre}.")
                     else:
                         print("Esta arma ya ha sido seleccionada. Elige otra.")
                 else:
-                    print("Opción inválida. Intenta de nuevo.")
+                    print("¡Opción inválida! Debes seleccionar un número entre 1 y 60.")
             else:
-                print("Opción inválida. Intenta de nuevo.")
+                print("¡Opción inválida! Introduce un número válido.")
 
             if len(armas_seleccionadas) >= num_armas:
                 print(f"Has seleccionado el número requerido de armas: {num_armas}.")
@@ -735,7 +740,7 @@ class APP:
 
     def seleccionar_personajes(self, num_personajes):
         # Llama a CSV_crear_personaje para cargar personajes desde el CSV
-        self.CSV_crear_personaje()  #personajes del csv_persona_lista
+        self.CSV_crear_personaje()  # personajes del csv_persona_lista
         personajes_seleccionados = []
         while True:
             print('Menú de selección de personajes:')
@@ -743,22 +748,22 @@ class APP:
                 print(f"{i + 1}. {personaje.nombre}")
             print("0. Salir")
             
-            opcion = input("Ingresa el número del personaje que deseas seleccionar (1-7) o '0' para terminar: ")
+            opcion = input("Ingresa el número del personaje que deseas seleccionar (1-96) o '0' para terminar: ")
             if opcion == "0":
                 print("Saliendo del menú de personajes...")
                 break
             if opcion.isdigit():
                 indice = int(opcion) - 1
-                if 0 <= indice < len(self.CSV_personaje_lista):
+                if 0 <= indice < len(self.CSV_personaje_lista):  # Verifica que el índice sea válido
                     if self.CSV_personaje_lista[indice] not in personajes_seleccionados:
                         personajes_seleccionados.append(self.CSV_personaje_lista[indice])
                         print(f"Has seleccionado al personaje {self.CSV_personaje_lista[indice].nombre}.")
                     else:
                         print("Este personaje ya ha sido seleccionado. Elige otro.")
                 else:
-                    print("Opción inválida. Intenta de nuevo.")
+                    print("¡Opción inválida! Debes seleccionar un número entre 1 y 96.")
             else:
-                print("Opción inválida. Intenta de nuevo.")
+                print("¡Opción inválida! Introduce un número válido.")
 
             if len(personajes_seleccionados) >= num_personajes:
                 print(f"Has seleccionado el número requerido de personajes: {num_personajes}.")
@@ -766,61 +771,61 @@ class APP:
 
         return personajes_seleccionados
 
+
     def mostrar_menu_planetas(self):
         print("Aquí podrás seleccionar el nombre del planeta para tu batalla:")
         for i, planeta in enumerate(self.CSV_planeta_lista):
             print(f"{i + 1}.- {planeta.nombre}")
-        print("99.- Salir")
+        print("0.- Salir")
 
     def seleccionar_planeta(self):
         while True:
             self.mostrar_menu_planetas()
-            opcion_p = input("\nIngresa aquí el número del planeta al que quieres viajar, o introduce 99 para salir: ")
-            if opcion_p == "99":
+            opcion_p = input("\nIngresa aquí el número del planeta al que quieres viajar, o introduce '0' para salir: ")
+            
+            if opcion_p == "0":
                 print("\nSaliendo del menú...")
                 return None  # Salir y devolver None
+            
             if opcion_p.isdigit():
                 indice = int(opcion_p) - 1
-                if 0 <= indice < len(self.CSV_planeta_lista):
+                if 0 <= indice < len(self.CSV_planeta_lista):  # Verifica que el índice sea válido
                     planeta_seleccionado = self.CSV_planeta_lista[indice]
                     print(f"\nHas seleccionado el planeta {planeta_seleccionado.nombre}")
                     return planeta_seleccionado  # Devolver el planeta seleccionado
                 else:
-                    print("¡Opción inválida! Prueba con un número válido.")
+                    print("¡Opción inválida! Debes seleccionar un número entre 1 y 13.")
             else:
                 print("¡Opción inválida! Introduce un número válido.")
-
-            if planeta_seleccionado:
-                print(f"Perfecto, has elegido el planeta {planeta_seleccionado.nombre}.")
-            else:
-                print("No has seleccionado ningún planeta.")
 
     def mostrar_menu_naves(self):
         print("Aquí podrás seleccionar el nombre de la nave en la que quieres viajar:")
         for i, nave in enumerate(self.CSV_nave_lista):
             print(f"{i + 1}.- {nave.nombre}")
-        print("99.- Salir")
+        print("0.- Salir")
 
     def seleccionar_nave(self):
         self.CSV_Crear_nave()
         while True:
             self.mostrar_menu_naves()
-            opcion_n = input("Ingresa aquí el número de la nave al que quieres viajar, o introduce 99 para salir: ")
-            if opcion_n == "99":
+            opcion_n = input("Ingresa aquí el número de la nave al que quieres viajar, o introduce '0' para salir: ")
+            
+            if opcion_n == "0":
                 print("Saliendo del menú...")
                 return None  # Salir y devolver None
+            
             if opcion_n.isdigit():
                 indice = int(opcion_n) - 1
-                if 0 <= indice < len(self.CSV_nave_lista):
+                if 0 <= indice < len(self.CSV_nave_lista):  # Verifica que el índice sea válido
                     nave_seleccionada = self.CSV_nave_lista[indice]
                     print(f"Has seleccionado la nave {nave_seleccionada.nombre}")
                     return nave_seleccionada  # Devolver la nave seleccionada
                 else:
-                    print("¡Opción inválida! Prueba con un número válido.")
+                    print("¡Opción inválida! Debes seleccionar un número entre 1 y 60.")
             else:
                 print("¡Opción inválida! Introduce un número válido.")
 
-    def crear_mision(self):  
+    def crear_mision(self, usuario):  
         if len(self.mision_lista) >= 5:  # hasta 5 misiones
             print("Ya has alcanzado el límite de 5 misiones.")
             return
@@ -851,7 +856,7 @@ class APP:
         # Crear la misión
         nombre = f"batalla de {planeta_seleccionado.nombre}"
         nueva_mision = Mision(nombre, planeta_seleccionado, nave_seleccionada, personajes, armas)    
-        self.mision_lista.append(nueva_mision)
+        usuario.mision_lista.append(nueva_mision)
 
         print(f"Misión '{nombre}' creada exitosamente.")
 
