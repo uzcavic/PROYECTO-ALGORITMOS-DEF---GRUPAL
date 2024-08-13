@@ -38,6 +38,7 @@ class APP:
         
             self.CSV_Crear_planetas()
             self.CSV_crear_arma()
+            self.CSV_crear_personaje() 
             self.CSV_Crear_nave()
             self.crear_pelicula() 
             self.crear_especies() 
@@ -727,8 +728,6 @@ class APP:
         print(f"{len(self.CSV_personaje_lista) + 1}. Salir")
 
     def seleccionar_personajes(self, num_personajes):
-        # Llama a CSV_crear_personaje para cargar personajes desde el CSV
-        self.CSV_crear_personaje()  # personajes del csv_persona_lista
         personajes_seleccionados = []
         while True:
             print('Menú de selección de personajes:')
@@ -792,7 +791,6 @@ class APP:
         print("0.- Salir")
 
     def seleccionar_nave(self):
-        self.CSV_Crear_nave()
         while True:
             self.mostrar_menu_naves()
             opcion_n = input("Ingresa aquí el número de la nave al que quieres viajar, o introduce '0' para salir: ")
