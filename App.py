@@ -89,7 +89,7 @@ class APP:
                         8. Salir""")
                 opcion = input("---> ").strip()
 
-                if opcion == "1":
+                '''if opcion == "1":
                     self.buscar_personaje()
                 elif opcion == "2":
                     contador = 1
@@ -104,8 +104,8 @@ class APP:
                         planeta: Planeta
                         print(f"Planeta N°{contador}\n")
                         planeta.showPlaneta()
-                        contador += 1
-                elif opcion == "4":
+                        contador += 1'''
+                if opcion == "4":
                     self.grafica_planetas()
                 elif opcion == "5":
                     self.Grafica_nave()
@@ -911,9 +911,9 @@ class APP:
             else:
                 print("Opción inválida. Intenta de nuevo.")
 
-    def guardar_misiones(self):
+    def guardar_misiones(self, usuario):
         with open("misiones.txt", "w") as f:
-            for mision in self.mision_lista:
+            for mision in usuario.mision_lista:
                 mision:Mision
                 # Cambiar la forma en que se guardan los personajes y armas
                 personajes_nombres = [p.nombre for p in mision.personajes]  # Extraer los nombres de los personajes
@@ -921,7 +921,7 @@ class APP:
                 f.write(f"{mision.nombre},{mision.planeta_seleccionado.nombre},{mision.nave_seleccionada.nombre},{','.join(personajes_nombres)},{','.join(armas_nombres)}\n")
         print("Misiones guardadas exitosamente.")
 
-    def cargar_misiones(self):
+    def cargar_misiones(self, usuario):
         try:
             with open("misiones.txt", "r") as f:
                 for line in f:
@@ -935,31 +935,31 @@ class APP:
                     
                     if planeta and nave:
                         mision = Mision(nombre, planeta, nave, armas, personajes)
-                        self.mision_lista.append(mision)
+                        usuario.mision_lista.append(mision)
                     else:
                         print(f"Error al cargar la misión '{nombre}': planeta o nave no encontrados.")
             print("Misiones cargadas exitosamente.")
         except FileNotFoundError:
             print("El archivo de misiones no se encontró.")
 
-    def visualizar_misiones(self):
-        if not self.mision_lista:
+    def visualizar_misiones(self, usuario):
+        if not usuario.mision_lista:
             print("No tienes misiones creadas.")
             return
 
         print("Tus misiones:")
-        for i, mision in enumerate(self.mision_lista):
+        for i, mision in enumerate(usuario.mision_lista):
             print(f"{i + 1}. {mision.nombre}")
 
         opcion = input("Selecciona el número de la misión para ver detalles o 'salir' para volver: ")
-        if opcion.isdigit() and 1 <= int(opcion) <= len(self.mision_lista):
-            mision = self.mision_lista[int(opcion) - 1]
+        if opcion.isdigit() and 1 <= int(opcion) <= len(usuario.mision_lista):
+            mision = usuario.mision_lista[int(opcion) - 1]
             print(f"Detalles de la misión '{mision.nombre}':")
-            print(f"Planeta: {mision.planeta_seleccionado.nombre}")
-            print(f"Nave: {mision.nave_seleccionada.nombre}")
+            print(f"Planeta: {mision.planeta_seleccionado}")  
+            print(f"Nave: {mision.nave_seleccionada}")  
             print(f"Personajes: {', '.join([p.nombre for p in mision.personajes])}")
-            print(f"Armas: {', '.join([arma.nombre for arma in mision.armas_seleccionadas])}")  # Cambiar armas_seleccionadas a armas
+            print(f"Armas: {', '.join([arma.nombre for arma in mision.armas_seleccionadas])}") 
         elif opcion.lower() == "salir":
             print("Volviendo al menú de misiones...")
         else:
-            print("Opción inválida.")       
+            print("Opción inválida.")      
