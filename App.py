@@ -925,7 +925,7 @@ class APP:
         with open("misiones.txt", "a") as f:
             for mision in self.mision_lista:
                 mision:Mision
-                f.write(f"{mision.nombre},{mision.planeta_destino},{mision.nave},{','.join(mision.integrantes)},{','.join(mision.armas)}\n")
+                f.write(f"{mision.nombre},{mision.planeta_seleccionado},{mision.nave_seleccionada},{','.join(mision.personajes)},{','.join(mision.armas_seleccionadas)}\n")
         print("Misiones guardadas exitosamente.")
 
 
