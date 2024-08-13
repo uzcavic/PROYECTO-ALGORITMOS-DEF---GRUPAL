@@ -1,9 +1,9 @@
 class Mision:
-    def __init__(self, nombre, planeta_destino, nave, armas, integrantes):
+    def __init__(self, nombre, planeta, nave, personajes, armas):
         self.nombre = nombre
-        self.planeta_destino = planeta_destino
-        self.nave = nave
-        self.armas = armas
-        self.integrantes = integrantes
+        self.planeta_seleccionado = planeta  # Asegúrate de que este atributo esté definido
+        self.nave_seleccionada = nave
+        self.personajes = personajes
+        self.armas_seleccionadas = armas
 
         

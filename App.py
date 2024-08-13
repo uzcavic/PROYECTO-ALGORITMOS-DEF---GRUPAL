@@ -34,32 +34,31 @@ class APP:
     def start(self):
             print('Cargando datos...')
             print('Espere un momento, por favor')
-            self.CSV_Crear_nave()
+        
             self.CSV_Crear_planetas()
             self.CSV_crear_arma()
-            self.CSV_crear_personaje()
             '''for arma in self.csv_arma_lista:
                 arma.showArmas()'''
-            self.crear_pelicula() 
+            '''self.crear_pelicula() 
             self.crear_especies() 
             self.crear_planeta() 
             
             self.crear_personaje() 
 
             self.relacionar_personajes_con_planetas()
-            '''for  planeta in self.planeta_lista:
-                planeta.showPlaneta()'''
+            for  planeta in self.planeta_lista:
+                planeta.showPlaneta()
 
             self.crear_nave() 
             print("NAVES")
-            '''for nave in self.nave_lista:
-                nave.showNave()'''
-            '''print("Vehículos")'''
+            for nave in self.nave_lista:
+                nave.showNave()
+            print("Vehículos")
             self.crear_vehiculos() 
-            '''for vehiculo in self.vehiculos_lista:
-                vehiculo.showVehiculo()'''
+            for vehiculo in self.vehiculos_lista:
+                vehiculo.showVehiculo()
             self.relacionar_vehiculos_y_naves_con_personajes()
-            '''for personaje in self.personaje_lista:
+            for personaje in self.personaje_lista:
                 personaje.showPersonaje()'''
             self.mostrar_menu()
 
@@ -98,7 +97,7 @@ class APP:
                         8. Salir""")
                 opcion = input("---> ").strip()
 
-                if opcion == "1":
+                '''if opcion == "1":
                     self.buscar_personaje()
                 elif opcion == "2":
                     contador = 1
@@ -113,8 +112,8 @@ class APP:
                         planeta: Planeta
                         print(f"Planeta N°{contador}\n")
                         planeta.showPlaneta()
-                        contador += 1
-                elif opcion == "4":
+                        contador += 1'''
+                if opcion == "4":
                     self.grafica_planetas()
                 elif opcion == "5":
                     self.Grafica_nave()
@@ -458,8 +457,6 @@ class APP:
                 nueva_especie = Especie(name, uid, height, classification, homeworld, language, lista_personajes,lista_episodios)
                 self.especie_lista.append(nueva_especie)
 
-
-                               
     def crear_pelicula(self): 
         url = "https://swapi.dev/api/films/"
         response = requests.get(url)
@@ -531,8 +528,6 @@ class APP:
             especiet = archivo_personaje.iloc[i, 2]
             nuevo_personaje = Personaje(nombre, planeta_origen, 0,genero, especiet, 0, 0)
             self.CSV_personaje_lista.append(nuevo_personaje)
-
-
 
     def crear_nave(self):
         for nave_id in range(1, 37):
@@ -610,8 +605,6 @@ class APP:
                     if f"https://www.swapi.tech/api/people/{id_personaje}" in personajes_en_pelicula:
                         episodios.append(pelicula['properties']['title'])
             return episodios
-
-
 
     def crear_planeta(self):
         for id_planeta in range(1, 61):
@@ -698,9 +691,7 @@ class APP:
             nueva_arma = Armas(uid, nombre, modelo, tipo, descripcion)
             self.csv_arma_lista.append(nueva_arma)
 
-#Aquí va el menú de las misiones
-#Menú para el personaje
-
+#A continuación se presentan los métodos para mostrar los menús y seleccionar las opciones del usuario
 
 
     def seleccionar_armas(self, num_armas):
@@ -710,9 +701,9 @@ class APP:
             print("Menú de selección de armas:")
             for i, arma in enumerate(self.csv_arma_lista):
                 print(f"{i + 1}. {arma.nombre}")
-            print("8. Salir")
+            print("0. Salir")
             
-            opcion = input("Ingresa el número del arma que deseas seleccionar (1-8) o '0' para terminar: ")
+            opcion = input("Ingresa el número del arma que deseas seleccionar (1-7) o '0' para terminar: ")
             if opcion == "0":
                 print("Saliendo del menú de armas...")
                 break
@@ -735,7 +726,6 @@ class APP:
 
         return armas_seleccionadas
 
-
     def mostrar_menu_personajes(self):
         print("¡Hola viajero! aquí vas a poder escoger tus misiones")
         print("Menú de selección de personajes:")
@@ -751,9 +741,9 @@ class APP:
             print('Menú de selección de personajes:')
             for i, personaje in enumerate(self.CSV_personaje_lista):
                 print(f"{i + 1}. {personaje.nombre}")
-            print("8. Salir")
+            print("0. Salir")
             
-            opcion = input("Ingresa el número del personaje que deseas seleccionar (1-8) o '0' para terminar: ")
+            opcion = input("Ingresa el número del personaje que deseas seleccionar (1-7) o '0' para terminar: ")
             if opcion == "0":
                 print("Saliendo del menú de personajes...")
                 break
@@ -850,7 +840,7 @@ class APP:
             return
 
         # Selección de personajes
-        personajes = self.seleccionar_personajes()
+        personajes = self.seleccionar_personajes(7)
         if not personajes:  
             print("Debes seleccionar al menos un personaje. Cancela la creación de la misión.")
             return
@@ -974,10 +964,10 @@ class APP:
         if opcion.isdigit() and 1 <= int(opcion) <= len(self.mision_lista):
             mision = self.mision_lista[int(opcion) - 1]
             print(f"Detalles de la misión '{mision.nombre}':")
-            print(f"Planeta: {mision.planeta.nombre}")
-            print(f"Nave: {mision.nave.nombre}")
+            print(f"Planeta: {mision.planeta_seleccionado.nombre}")
+            print(f"Nave: {mision.nave_seleccionada.nombre}")
             print(f"Personajes: {', '.join([p.nombre for p in mision.personajes])}")
-            print(f"Armas: {', '.join(mision.armas)}")
+            print(f"Armas: {', '.join([arma.nombre for arma in mision.armas_seleccionadas])}")  # Cambiar armas_seleccionadas a armas
         elif opcion.lower() == "salir":
             print("Volviendo al menú de misiones...")
         else:
