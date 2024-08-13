@@ -70,7 +70,7 @@ class APP:
                         print("Por favor, ingrese otro ID.")
                 else:
                     nombre = input("Ingrese su nombre: ").strip()
-                    nuevo_usuario = Usuario(uid, nombre, [])
+                    nuevo_usuario = Usuario(uid, nombre)
                     self.usuario_lista.append(nuevo_usuario)  # Agregar el ID a la lista de usuarios
                     usuario = nuevo_usuario  # Asignar el nuevo usuario
                     print(f"Usuario {nombre} registrado con éxito.")
@@ -811,7 +811,7 @@ class APP:
                 print("¡Opción inválida! Introduce un número válido.")
 
     def crear_mision(self, usuario):  
-        if len(self.mision_lista) >= 5:  # hasta 5 misiones
+        if len(usuario.mision_lista) >= 5:  # hasta 5 misiones
             print("Ya has alcanzado el límite de 5 misiones.")
             return
 
